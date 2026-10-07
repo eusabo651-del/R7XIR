@@ -215,3 +215,148 @@
 @media (max-width: 760px) {
   .login-wallmark { top: 17%; right: -14%; width: min(76vw, 340px); opacity: .06; }
 }
+
+
+/* Identidade azul integral para login, área do usuário, histórico, perfil e administração. */
+:root {
+  --primary: #238cff; --primary-foreground: #fff; --background: #07172a; --foreground: #eef6ff;
+  --card: #0d2139; --card-foreground: #eef6ff; --popover: #0d2139; --popover-foreground: #eef6ff;
+  --secondary: #102944; --secondary-foreground: #e8f3ff; --muted: #102944; --muted-foreground: #92abc5;
+  --accent: #12365b; --accent-foreground: #f2f8ff; --border: #1e4166; --input: #0b2037; --ring: #3b9cff;
+}
+html, body, #root { min-height: 100%; color: #eaf4ff; background: #061326; }
+body { background: radial-gradient(ellipse at 12% 8%, #0b3157 0, transparent 34%), radial-gradient(ellipse at 92% 92%, #0a2948 0, transparent 36%), linear-gradient(135deg, #061326, #0a1c31 54%, #061326); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline-color: #57b1ff; }
+.login-shell, .app-shell, .admin-shell, .loading-screen, .aux-page, .app-shell.rd-user-shell, .yx-aux-page, .quick-exit-active { filter: none !important; background-color: #061326; }
+.rd-user-main .page-view:not(.yx-aux-page) { filter: none !important; }
+.app-shell, .app-shell.rd-user-shell { background: radial-gradient(ellipse at 88% 2%, #10407155, transparent 32%), linear-gradient(135deg, #061326, #0a1d33 55%, #061326) !important; }
+.admin-shell { background: radial-gradient(ellipse at 85% 4%, #123f6c33, transparent 34%), linear-gradient(135deg, #061326, #0a1c30 58%, #061326) !important; }
+.app-main, .admin-main, .rd-user-main { min-width: 0; background: transparent; }
+.loading-screen, .quick-exit-active { color: #eaf4ff; background: radial-gradient(circle at 50% 35%, #123c67 0, transparent 35%), #061326 !important; }
+.loading-orbit { border-color: #25649b66; border-top-color: #45a8ff; color: #55b2ff; }
+.loading-screen span { color: #89a7c4; }
+.brand-icon, .aux-brand { border-color: #327bb7; color: #fff; background: linear-gradient(145deg, #1684e8, #0753aa); box-shadow: 0 8px 26px #087bff44; }
+.brand-icon .spotify-mark, .aux-brand .spotify-mark, .aux-studio-mark .spotify-mark, .aux-active-icon .spotify-mark, .aux-control-mark .spotify-mark, .aux-module-mark .spotify-mark { object-fit: contain; border-radius: 50%; }
+.brand-name, .rd-sidebar-brand .brand-name { color: #f4f9ff; }
+.brand-caption, .rd-sidebar-brand .brand-caption { color: #80a9d0; }
+.eyebrow, .topbar-kicker, .card-step, .sidebar-section-label, .rd-nav-label, .admin-heading .eyebrow-dot { color: #7fbfff; }
+.eyebrow-dot, .online-dot, .toolbar-status .online-dot { background: #35a1ff; box-shadow: 0 0 0 4px #1684f722; }
+.login-shell { background: radial-gradient(ellipse at 7% 18%, #0d477d 0, transparent 38%), radial-gradient(ellipse at 88% 82%, #0a3156 0, transparent 38%), linear-gradient(132deg, #04101d, #0a2037 55%, #061326) !important; }
+.login-shell::before { opacity: .1; background-image: linear-gradient(#60b6ff20 1px, transparent 1px), linear-gradient(90deg, #60b6ff20 1px, transparent 1px); }
+.login-copy { border-color: #21517c; background: radial-gradient(ellipse at 75% 8%, #15518888, transparent 42%), linear-gradient(145deg, #0e2c49, #09192a 76%); box-shadow: 0 30px 90px #0008, inset 0 1px #5eb7ff1a; }
+.login-copy h1 em, .login-stats b, .login-footer .footer-red { color: #5bb4ff !important; }
+.login-copy p, .login-stats span, .login-footer { color: #a0bad4; }
+.login-wallmark { opacity: .17; }
+.login-card-wrap { border: 1px solid #2c71aa; background: linear-gradient(145deg, #54b3ff, #1467ab 45%, #0a1c30); }
+.login-card-topline { border-color: #1b4266; color: #80c4ff; background: #0b2138; }
+.login-card { border-color: #1a4368; background: linear-gradient(150deg, #102b46, #081827 78%); }
+.login-card .mini-label, .login-card .admin-toggle { color: #84c5ff; }
+.login-card .input-shell { border-color: #285781; color: #9bc4e6; background: linear-gradient(145deg, #0b223a, #091827); }
+.login-card .input-shell:focus-within { border-color: #4aaaff; background: #0d2b49; }
+.login-card .secure-footer { border-top-color: #214360; color: #8baac8; }
+.secure-chip { border-color: #286295; color: #9bd2ff; background: #0a2845; }
+.login-split-glow { background: linear-gradient(transparent, #258ce8, transparent); }
+.app-sidebar, .rd-sidebar, .admin-sidebar, .mobile-header, .bottom-nav, .yx-user-topbar { border-color: #173a5d !important; background: linear-gradient(180deg, #0c2743, #071526 90%) !important; }
+.rd-sidebar-brand, .rd-sidebar-foot, .sidebar-profile { border-color: #1d4165; }
+.rd-nav-label, .sidebar-section-label { color: #7595b5; }
+.rd-user-nav button, .sidebar-link, .admin-nav button, .yx-user-tabs button { color: #91a9c2; }
+.rd-user-nav button:hover, .sidebar-link:hover, .admin-nav button:hover, .yx-user-tabs button:hover { color: #f3f8ff; background: #113252; }
+.rd-user-nav button.active, .sidebar-link.active, .admin-nav button.active, .bottom-nav button.active, .os-option.selected, .performance-option.selected, .yx-user-tabs button.active { border-color: #286ca5; color: #f6fbff; background: linear-gradient(120deg, #123d65, #0c2742); box-shadow: inset 0 0 0 1px #4faaff12; }
+.rd-user-nav button.active::before, .sidebar-link i, .yx-user-tabs button.active::after { background: #238cff; }
+.rd-user-nav button.active svg, .sidebar-link.active svg, .admin-nav button.active svg, .yx-user-tabs button.active svg { color: #68bcff; }
+.rd-account-block span, .sidebar-profile span, .sidebar-security span { color: #7996b4; }
+.rd-account-block b, .sidebar-profile b, .sidebar-security b { color: #e8f4ff; }
+.rd-logout, .yx-logout, .sidebar-security, .license-pill { border-color: #1c4165; color: #c4d9ed; background: #0c2036; }
+.rd-logout:hover, .yx-logout:hover { border-color: #3285c9; color: #fff; background: #123354; }
+.page-heading h1, .admin-heading h1, .topbar h2, .section-intro h2 { color: #f1f7ff; }
+.page-heading p, .admin-heading p, .section-intro p, .hero-copy p, .result-header p, .contact-panel > p, .profile-main p, .profile-grid span, .profile-grid small { color: #91a9c2; }
+.hero-panel { border-color: #1d4a75; background: radial-gradient(circle at 78% 40%, #15558b 0, transparent 30%), linear-gradient(115deg, #123859, #0a1b2d 67%); }
+.hero-panel::after { background: linear-gradient(90deg, transparent 60%, #54adff14), repeating-linear-gradient(115deg, transparent 0 12px, #74bbff08 13px 14px); }
+.hero-copy h1 strong, .hero-meta svg, .hero-meta .wave, .wave, .step-index, .value-icon, .history-values, .info-feature h2 em, .info-points svg, .quote-strip > span:first-child, .info-icon, .toolbar-count b { color: #59b4ff !important; }
+.hero-copy p, .hero-meta, .cross-label { color: #9cb7d2; }
+.hero-crosshair { color: #55adf4; filter: drop-shadow(0 0 14px #1684f755); }
+.crosshair-ring, .ring-one, .ring-two { border-color: #57aaff45; }
+.config-card, .result-card, .history-item, .contact-panel, .profile-card, .security-card, .stat-card, .admin-panel-card, .licenses-table, .modal-card, .quote-strip, .contact-button, .value-item, .created-key-banner, .activation-notice-card { border-color: #1b4167; color: #eaf4ff; background: linear-gradient(145deg, #0e2742, #081827 78%); }
+.config-card-header h3, .result-header h2, .info-feature h2, .contact-panel h3, .profile-main h2, .profile-grid b, .stat-card strong, .panel-title h3, .admin-recent b, .user-cell b, .expiry-cell b { color: #edf6ff; }
+.config-status, .device-detected, .generate-row > span, .history-info span, .history-values small, .history-chevron, .empty-state p, .info-feature p, .quote-strip, .contact-button small, .security-card p, .admin-recent span, .health-score p, .key-text, .expiry-cell span { color: #91abc5; }
+.os-option, .performance-option, .value-item, .history-os.android, .history-os.ios, .contact-button, .row-actions button, .plan-select { border-color: #1b4165; color: #b7cee3; background: #0c2036; }
+.os-option:hover, .performance-option:hover, .contact-button:hover, .row-actions button:hover { border-color: #3485c5; color: #fff; background: #123454; }
+.os-option.selected, .performance-option.selected, .favorite-button.active { border-color: #2f85c8; color: #f5faff; background: linear-gradient(145deg, #123b61, #0d2843); }
+.os-option b, .performance-option.selected .performance-bars i, .device-signal span { background: #2696f4; }
+.select-shell, .search-shell, .input-shell { border-color: #1e486e; color: #90b1d0; background: #091c30; }
+.select-shell:focus-within, .search-shell:focus-within, .input-shell:focus-within { border-color: #3e9df0; background: #0d2945; box-shadow: 0 0 0 3px #1684f722; }
+.select-shell select, .input-shell select, .input-shell input, .search-shell input { color: #eff7ff; }
+.select-shell select option, .input-shell select option { color: #eff7ff; background: #0b2037; }
+.input-shell input::placeholder, .search-shell input::placeholder { color: #6f8eac; }
+.generate-button, .primary-button, .aux-action-row button, .install-notice > button:not(.notice-close), .ios-guide-card > button, .contact-letter { border-color: #238cff; color: #fff; background: linear-gradient(135deg, #2499ff, #075bc2); box-shadow: 0 10px 26px #087bff32; }
+.generate-button:hover, .primary-button:hover, .aux-action-row button:hover, .install-notice > button:not(.notice-close):hover { color: #fff; background: linear-gradient(135deg, #53b1ff, #1476db); }
+.ghost-button, .icon-button, .license-action, .favorite-button, .text-button, .input-action { border-color: #21476a; color: #a9c6e1; background: #0d233b; }
+.ghost-button:hover, .icon-button:hover, .license-action:hover:not(:disabled), .text-button:hover, .input-action:hover { border-color: #398bd1; color: #fff; background: #143656; }
+.tag-red, .tag-green { border-color: #256193; color: #9ad1ff; background: #0e2a48; }
+.license-pill b { border-color: #285173; color: #d3e7fa; }
+.list-toolbar, .license-toolbar, .toolbar-count { color: #88a4bf; }
+.history-item:hover { border-color: #3789cb; }
+.history-os.android, .history-os.ios { color: #72bdff; background: #123656; }
+.empty-state { border-color: #285178; background: #0a1d31; }
+.empty-state > div, .info-icon, .security-icon, .stat-icon.red, .stat-icon.green, .stat-icon.gray, .stat-icon.purple { border-color: #235783; color: #75bdff; background: #123454; }
+.info-feature { background: radial-gradient(circle at 82% 18%, #145183 0, transparent 34%), linear-gradient(145deg, #102c49, #091a2b 78%); }
+.info-points { color: #bdd2e5; }
+.contact-button > svg, .favorite-button, .security-check { color: #76bdff; }
+.contact-letter { border: 0; }
+.quote-strip { border-color: #204568; color: #b1c6db; background: #0b2036; }
+.profile-main { border-bottom-color: #1e4265; }
+.profile-avatar, .avatar, .mini-avatar, .admin-avatar { color: #eef7ff; background: linear-gradient(145deg, #288fe4, #103c68); }
+.profile-grid { border-color: #214668; }
+.security-card { border-color: #20486d; }
+.logout-button, .sidebar-logout { color: #87b9e8; }
+.admin-sidebar { border-right-color: #1b4164 !important; }
+.admin-topbar { border-bottom-color: #1b4164 !important; background: #081a2cf2; }
+.admin-nav button.active { background: linear-gradient(120deg, #123d65, #0b233d); }
+.admin-badge, .admin-menu-popover { border-color: #28577f; color: #9ad1ff; background: #0e2a47; }
+.admin-identity span, .admin-online, .stat-card > span, .stat-card small, .table-head, .muted-text, .admin-empty { color: #88a4bf; }
+.admin-online, .status-pill, .health-circle, .green-icon { color: #61b8ff; }
+.admin-heading .eyebrow-dot, .health-lines i { background: #2e9bfa; box-shadow: 0 0 0 3px #1684f722; }
+.admin-overview-grid, .stats-grid { gap: 14px; }
+.admin-recent, .table-head, .table-row { border-color: #1b3d5d; }
+.table-row:hover, .admin-recent:hover { background: #0d2945; }
+.table-head { color: #81a9ce; }
+.plan-select { border-color: #204b71; color: #e4f2ff; background: #0b2037; }
+.row-actions .danger-action:hover { color: #ffb7c3; background: #183654; }
+.created-key-banner { border-color: #2d75af; background: linear-gradient(120deg, #123b61, #0d243b); }
+.created-key-banner span, .created-key-banner b { color: #dceeff; }
+.created-key-banner > button:not(.banner-close) { border-color: #3076af; color: #e5f4ff; background: #12406b; }
+.modal-backdrop, .activation-notice-backdrop, .ios-install-guide { background: #020b16c9; }
+.modal-card, .activation-notice-card, .ios-guide-card { border-color: #285680; color: #eaf4ff; background: linear-gradient(145deg, #102b47, #071727); }
+.activation-notice-card h2, .ios-guide-card h2 { color: #f1f8ff; }
+.activation-hwid-label, .ios-guide-card p { color: #a2bed8; }
+.activation-notice-card code, .ios-share-hint { border-color: #254b6e; color: #dceeff; background: #091e34; }
+.activation-notice-card button, .ios-share-hint { border-color: #2a5b85; color: #dceeff; background: #102d4b; }
+.install-notice { border-color: #28649a; color: #e8f4ff; background: #0c233cf2; }
+.install-notice span, .notice-close { color: #91acc6; }
+.notice-pulse, .ios-guide-icon { border-color: #2c77b2; color: #fff; background: linear-gradient(145deg, #1684e8, #0753aa); }
+.admin-badge, .yx-aux-status, .status-pill { color: #87c7ff; }
+.yx-aux-window.yx-aux-studio { border-color: #1d4b78 !important; background: radial-gradient(ellipse at 92% 2%, #0e529944, transparent 36%), radial-gradient(ellipse at 5% 95%, #0d3d7022, transparent 42%), linear-gradient(145deg, #0c1b2d, #07111e 72%) !important; }
+.yx-aux-tabs button.active, .yx-aux-window.yx-aux-studio > .yx-aux-tabs button.active { border-color: #2766a0; background: linear-gradient(120deg, #12395d, #0c2339); box-shadow: inset 0 0 0 1px #3b8bd124, 0 8px 22px #0005; }
+.yx-aim-row i.on, .aux-toggle-row > i.on { border-color: #238cff; background: #1269bf; }
+.yx-module-grid .aux-module.active { border-color: #246eb4; background: linear-gradient(145deg, #153b62, #10243a); }
+.yx-aux-status i, .aux-status-dot, .aux-green-dot { background: #38a3ff; box-shadow: 0 0 12px #1684f799; }
+.about-eye-banner { border-color: #1e4c76; background: radial-gradient(ellipse at 75% 24%, #1264a766, transparent 38%), linear-gradient(135deg, #0e2b48, #071626); }
+.about-eye-banner::after { background: linear-gradient(90deg, #06132655, transparent 58%, #06132622); }
+.about-art-grid { opacity: .4; background-image: linear-gradient(#67baff14 1px, transparent 1px), linear-gradient(90deg, #67baff14 1px, transparent 1px); }
+.about-art-orbit { border-color: #3b9df544; box-shadow: 0 0 0 22px #258cff0a, 0 0 0 45px #258cff08; }
+.about-art-copy > span { color: #69baff; }
+.about-art-mark { border-color: #328de0; background: linear-gradient(145deg, #1684e8, #0753aa); }
+@media (max-width: 760px) {
+  .app-shell.rd-user-shell, .admin-shell { background: linear-gradient(180deg, #0a1e33, #061326 75%) !important; }
+  .rd-sidebar { box-shadow: 0 8px 30px #0005; }
+  .rd-user-nav button.active::before { background: #238cff; }
+  .rd-user-main .page-view:not(.yx-aux-page) { filter: none !important; }
+  .login-wallmark { top: 17%; right: -14%; width: min(76vw, 340px); opacity: .13; }
+  .admin-content, .page-view { color: #eaf4ff; }
+}
+
+:root { --destructive: #2188e8; --destructive-foreground: #fff; }
+.red-line { background: #238cff; }
+.footer-red { color: #5bb4ff !important; }
+.status-pill.revoked, .status-pill.blocked { color: #8ccaff; }
+.row-actions .danger-action:hover { color: #dceeff; border-color: #397fba; background: #153755; }

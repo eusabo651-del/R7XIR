@@ -263,7 +263,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 /* AUXÍLIO DO RD: identidade monocromática em gradiente e tela inicial mobile */
 html, body { background: linear-gradient(135deg, #030303 0%, #1b1b1b 52%, #050505 100%); }
-.login-shell, .app-shell, .admin-shell, .loading-screen, .aux-page { filter: grayscale(1); }
+.login-shell, .app-shell, .admin-shell, .loading-screen, .aux-page { filter: none; }
 .login-shell { min-height: 100svh; background: radial-gradient(circle at 82% 4%, #424242 0, transparent 29%), radial-gradient(circle at 12% 92%, #252525 0, transparent 32%), linear-gradient(135deg, #050505 0%, #202020 55%, #070707 100%); }
 .login-shell::before { opacity: .1; background-size: 64px 64px; mask-image: linear-gradient(to bottom, #000, transparent 82%); }
 .login-split-glow { background: linear-gradient(transparent, #d7d7d7, transparent); opacity: .24; }
@@ -703,7 +703,7 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 
 /* Layout da aba Auxílio inspirado na gravação: trilho lateral, painel único e destaque vermelho. */
 .app-shell.rd-user-shell { filter: none; }
-.rd-user-main .page-view:not(.yx-aux-page) { filter: grayscale(1); }
+.rd-user-main .page-view:not(.yx-aux-page) { filter: none; }
 .yx-aux-page { width: min(1040px, calc(100% - 56px)) !important; padding: 38px 0 64px !important; }
 .yx-aux-window { display: grid !important; grid-template-columns: 84px minmax(0, 1fr); grid-template-rows: auto auto auto auto; column-gap: 30px; min-height: 610px; padding: 26px 30px 21px !important; border: 1px solid #303136; border-radius: 24px; background: #151619 !important; box-shadow: 0 28px 80px #000b; }
 .yx-aux-window > .yx-aux-heading { grid-column: 2; grid-row: 1; min-height: 77px; padding: 3px 0 19px; border-bottom: 1px solid #303136; }
@@ -713,7 +713,7 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 .yx-aux-status { color: #a8a9ae; }
 .yx-aux-status i { background: #d92e3d; box-shadow: 0 0 12px #d92e3d99; }
 .yx-aux-window > .yx-aux-tabs { grid-column: 1; grid-row: 1 / span 4; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 17px; width: 84px; height: 100%; padding: 10px 0 0; border-right: 1px solid #303136; border-bottom: 0; overflow: visible; }
-.yx-aux-tabs::before { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 17px; border: 1px solid #388ee0; border-radius: 12px; color: transparent; background: #1279dc url("/spotify-mark-white.png") center / 68% no-repeat; content: ""; box-shadow: 0 7px 18px #087bff44; }
+.yx-aux-tabs::before { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 17px; border: 1px solid #388ee0; border-radius: 12px; color: transparent; background: #1279dc url("/r7xir-spotify-logo.png") center / 68% no-repeat; content: ""; box-shadow: 0 7px 18px #087bff44; }
 .yx-aux-tabs button { display: grid; place-items: center; width: 48px; height: 48px; min-height: 48px; padding: 0; border: 1px solid transparent; border-radius: 13px; color: #77787d; background: transparent; }
 .yx-aux-tabs button span { display: none; }
 .yx-aux-tabs button:hover { color: #f0f0f1; background: #25262a; }
