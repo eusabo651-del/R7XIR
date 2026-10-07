@@ -1,5 +1,5 @@
-const CACHE_NAME = "r7xir-shell-v3";
-const APP_SHELL = ["/", "/manifest.json", "/r7xir-icon-180.png", "/r7xir-icon-192.png", "/r7xir-icon-512.png", "/r7xir-icon-maskable-512.png", "/spotify-mark-white.png"];
+const CACHE_NAME = "r7xir-shell-v4";
+const APP_SHELL = ["/", "/manifest.json", "/r7xir-icon-180.png", "/r7xir-icon-192.png", "/r7xir-icon-512.png", "/r7xir-icon-maskable-512.png", "/r7xir-home-icon-180.png", "/r7xir-home-icon-192.png", "/r7xir-home-icon-512.png", "/r7xir-home-icon-maskable-512.png", "/spotify-mark-white.png"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));

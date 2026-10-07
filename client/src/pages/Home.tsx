@@ -158,6 +158,7 @@ function LoginScreen() {
     <main className="login-shell">
       <div className="login-noise" />
       <div className="login-split-glow" />
+      <div className="login-wallmark" aria-hidden="true"><SpotifyMark /></div>
       <header className="login-header"><AppLogo /><div className="secure-chip"><ShieldCheck size={14} /> SISTEMA PROTEGIDO</div></header>
       <section className="login-content">
         <div className="login-copy">

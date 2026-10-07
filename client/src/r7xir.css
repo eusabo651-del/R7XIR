@@ -190,3 +190,28 @@
   .aux-active-pill { gap: 5px; padding-inline: 6px; }
   .aux-active-pill small { letter-spacing: 0; }
 }
+
+
+/* Login azul com marca Spotify translúcida no plano de fundo. */
+.login-shell { filter: none !important; background: radial-gradient(ellipse at 8% 20%, #0d4d87 0, transparent 38%), radial-gradient(ellipse at 89% 82%, #083663 0, transparent 35%), linear-gradient(132deg, #040b14 0%, #0c1e32 54%, #050c15 100%); }
+.login-shell::before { opacity: .12; background-image: linear-gradient(#65baff1a 1px, transparent 1px), linear-gradient(90deg, #65baff1a 1px, transparent 1px); background-size: 64px 64px; }
+.login-wallmark { position: absolute; z-index: 0; top: 18%; right: 4%; display: grid; width: clamp(240px, 37vw, 500px); aspect-ratio: 1; place-items: center; opacity: .075; pointer-events: none; transform: rotate(-9deg); filter: drop-shadow(0 0 52px #1684f755); }
+.login-wallmark .spotify-mark { display: block; width: 100%; height: 100%; }
+.login-card-wrap { border: 1px solid #22588a; background: linear-gradient(145deg, #55adff, #1765a8 45%, #0a1d31); box-shadow: 0 24px 75px #000a, 0 0 32px #087bff1c; }
+.login-card-topline { border-bottom: 1px solid #1a4265; color: #8fcaff; background: #0b2035; }
+.login-card { border: 1px solid #183c5b; background: linear-gradient(150deg, #102b45, #091726 78%); }
+.login-card .card-icon { border-color: #2b6da3; color: #79c1ff; background: #123657; }
+.login-card .mini-label { color: #7fc1fa; }
+.login-card .card-description { color: #a6bed4; }
+.login-card .login-form label > span { color: #c0d5e8; }
+.login-card .input-shell { border-color: #244f73; color: #90b6d6; background: linear-gradient(145deg, #0a2035, #091827); }
+.login-card .input-shell:focus-within { border-color: #4ca9f4; background: #0d2944; box-shadow: 0 0 0 3px #1684f722; }
+.login-card .input-shell input { color: #f4f9ff; }
+.login-card .input-shell input::placeholder { color: #67839d; }
+.login-card .admin-toggle { color: #8fcaff; }
+.login-card .admin-toggle:hover { color: #c8e6ff; }
+.login-card .secure-footer { color: #7da0bf; }
+.login-card .secure-footer svg { color: #59b5ff; }
+@media (max-width: 760px) {
+  .login-wallmark { top: 17%; right: -14%; width: min(76vw, 340px); opacity: .06; }
+}
