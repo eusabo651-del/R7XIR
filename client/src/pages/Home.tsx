@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   Apple,
@@ -125,124 +125,6 @@ function AppLogo({ compact = false }: { compact?: boolean }) {
   );
 }
 
-type PortraitParticle = { x: number; y: number; dx: number; dy: number; size: number; delay: number; color: string };
-
-function ParticlePortrait({ src }: { src: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    const image = imageRef.current;
-    if (!canvas || !context || !image) return;
-
-    let frame = 0;
-    let disposed = false;
-    let particles: PortraitParticle[] = [];
-    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-    const ease = (value: number) => {
-      const normalized = Math.max(0, Math.min(1, value));
-      return normalized * normalized * (3 - 2 * normalized);
-    };
-    const randomAt = (x: number, y: number) => {
-      const value = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
-      return value - Math.floor(value);
-    };
-
-    const setup = () => {
-      if (disposed || !image.complete || !image.naturalWidth) return;
-      cancelAnimationFrame(frame);
-      const bounds = canvas.getBoundingClientRect();
-      if (bounds.width < 2 || bounds.height < 2) return;
-
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.35);
-      canvas.width = Math.round(bounds.width * dpr);
-      canvas.height = Math.round(bounds.height * dpr);
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const sample = document.createElement("canvas");
-      const sampleContext = sample.getContext("2d", { willReadFrequently: true });
-      if (!sampleContext) return;
-      const sampleScale = Math.min(1, 250 / Math.max(bounds.width, bounds.height));
-      const sampleWidth = Math.max(120, Math.round(bounds.width * sampleScale));
-      const sampleHeight = Math.max(120, Math.round(bounds.height * sampleScale));
-      sample.width = sampleWidth;
-      sample.height = sampleHeight;
-      const fit = Math.max(sampleWidth / image.naturalWidth, sampleHeight / image.naturalHeight);
-      const drawWidth = image.naturalWidth * fit;
-      const drawHeight = image.naturalHeight * fit;
-      sampleContext.drawImage(image, (sampleWidth - drawWidth) / 2, (sampleHeight - drawHeight) * 0.43, drawWidth, drawHeight);
-
-      const pixels = sampleContext.getImageData(0, 0, sampleWidth, sampleHeight).data;
-      const step = sampleWidth < 180 ? 3 : 4;
-      const scaleX = bounds.width / sampleWidth;
-      const scaleY = bounds.height / sampleHeight;
-      const particleSize = Math.max(1.5, step * Math.min(scaleX, scaleY) * 0.8);
-      particles = [];
-      for (let y = 0; y < sampleHeight; y += step) {
-        for (let x = 0; x < sampleWidth; x += step) {
-          const offset = (y * sampleWidth + x) * 4;
-          const r = pixels[offset];
-          const g = pixels[offset + 1];
-          const b = pixels[offset + 2];
-          const alpha = pixels[offset + 3];
-          if (alpha < 90 || (r + g + b) / 3 < 22) continue;
-          const drift = randomAt(x + 17, y + 23);
-          particles.push({
-            x: x * scaleX,
-            y: y * scaleY,
-            dx: (drift - 0.18) * 76,
-            dy: (randomAt(x + 101, y + 211) - 0.3) * 74 + 24,
-            size: particleSize,
-            delay: randomAt(x + 311, y + 419),
-            color: `rgba(${r},${g},${b},${alpha / 255})`,
-          });
-        }
-      }
-
-      const startedAt = performance.now();
-      const draw = (now: number) => {
-        if (disposed) return;
-        const cycle = (now - startedAt) % 8700;
-        let breakup = 0;
-        if (cycle >= 1300 && cycle < 3400) breakup = ease((cycle - 1300) / 2100);
-        else if (cycle >= 3400 && cycle < 4300) breakup = 1;
-        else if (cycle >= 4300 && cycle < 6400) breakup = 1 - ease((cycle - 4300) / 2100);
-
-        context.clearRect(0, 0, bounds.width, bounds.height);
-        for (const particle of particles) {
-          const progress = ease((breakup - particle.delay * 0.2) / 0.8);
-          const x = particle.x + particle.dx * progress;
-          const y = particle.y + particle.dy * progress + 65 * progress * progress;
-          context.globalAlpha = 1 - progress * 0.48;
-          context.fillStyle = particle.color;
-          context.fillRect(x, y, particle.size, particle.size);
-        }
-        context.globalAlpha = 1;
-        image.style.opacity = String(reducedMotion ? 0.68 : 0.18 + (1 - breakup) * 0.2);
-        if (!reducedMotion) frame = requestAnimationFrame(draw);
-      };
-      draw(startedAt);
-    };
-
-    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(setup) : null;
-    observer?.observe(canvas);
-    image.addEventListener("load", setup);
-    window.addEventListener("resize", setup);
-    setup();
-    return () => {
-      disposed = true;
-      cancelAnimationFrame(frame);
-      observer?.disconnect();
-      image.removeEventListener("load", setup);
-      window.removeEventListener("resize", setup);
-    };
-  }, [src]);
-
-  return <><img ref={imageRef} className="rd-particle-base" src={src} alt="Retrato em preto e branco" fetchPriority="high" /><canvas ref={canvasRef} className="rd-particle-canvas" aria-hidden="true" /></>;
-}
-
 function LoadingScreen() {
   return <div className="loading-screen"><div className="loading-orbit"><Crosshair size={28} /></div><p>CARREGANDO PAINEL</p><span>Conectando com segurança...</span></div>;
 }
@@ -279,7 +161,7 @@ function LoginScreen() {
       <header className="login-header"><AppLogo /><div className="secure-chip"><ShieldCheck size={14} /> SISTEMA PROTEGIDO</div></header>
       <section className="login-content">
         <div className="login-copy">
-          <figure className="login-photo rd-login-photo"><ParticlePortrait src="/rd-portrait.jpeg" /><figcaption>PURPOU DEV / 2026</figcaption></figure>
+          <div className="login-art" aria-hidden="true"><div className="login-art-grid" /><div className="login-art-orbit login-art-orbit-one" /><div className="login-art-orbit login-art-orbit-two" /><div className="login-art-core"><SpotifyMark /><span>R7XIR</span></div><div className="login-art-caption"><span>R7XIR / SOUND OF CONTROL</span><i>01 — 04</i></div></div>
           <span className="eyebrow"><span className="eyebrow-dot" /> ACESSO EXCLUSIVO</span>
           <h1>R7XIR</h1>
           <p>Entre com sua chave e acesse seu espaço de controle.</p>
@@ -392,21 +274,18 @@ function AuxilioPage() {
     { id: "aimbot", label: "AIMBOT", icon: Target },
     { id: "sensi", label: "OTIMIZAÇÃO", icon: ShieldCheck },
     { id: "modules", label: "MÓDULOS", icon: Grid3X3 },
-    { id: "injection", label: "TERMUX CODES", icon: TerminalSquare },
+    { id: "injection", label: "TERMUX", icon: TerminalSquare },
   ];
   const titles = { aimbot: "AIMBOT", sensi: "OTIMIZAÇÃO", modules: "MÓDULOS", injection: "TERMUX CODES" };
+  const tabHints = { aimbot: "MIRA · PERFIS", sensi: "AJUSTE FINO", modules: "ATALHOS", injection: "ABRIR FF NORMAL / MAX" };
   const descriptions = { aimbot: "Assistência e ajustes de precisão", sensi: "Escolha a plataforma e o perfil", modules: "Atalhos dos recursos do painel", injection: "Abrir Free Fire normal ou MAX" };
   return <div className="page-view yx-aux-page">
-    <section className="yx-aux-window">
-      <img className="yx-aux-background" src="/rd-portrait.jpeg" alt="" aria-hidden="true" />
-      <header className="yx-aux-heading">
-        <div className="yx-aux-heading-copy"><span>R7XIR</span><img className="aux-scarface-banner" src="/scarface-banner.jpg" alt="Scarface" /><p>Ajustes de mira, desempenho e módulos em um só lugar.</p></div>
-        <span className="yx-aux-status"><i /> ONLINE</span>
+    <section className="yx-aux-window yx-aux-studio">
+      <header className="yx-aux-heading aux-studio-header">
+        <div className="aux-heading-lockup"><div className="aux-studio-mark"><SpotifyMark /></div><div className="yx-aux-heading-copy"><span>R7XIR / CONTROL STUDIO</span><h1>Auxílio</h1><p>Quatro módulos. Seu jeito de usar.</p></div></div>
+        <span className="yx-aux-status"><i /> AO VIVO</span>
       </header>
-      <nav className="yx-aux-tabs" aria-label="Seções do auxílio">
-        {tabs.map(item => <button key={item.id} className={tab === item.id ? "active" : ""} onClick={() => setTab(item.id)}>{item.icon && <item.icon size={17} />}<span>{item.label}</span></button>)}
-      </nav>
-      <div className="yx-aux-title"><div><span>R7XIR / {titles[tab]}</span><h2>{titles[tab] === "AIMBOT" ? "AJUSTES RÁPIDOS" : titles[tab]}</h2><p>{descriptions[tab]}</p></div></div>
+      <div className="yx-aux-title aux-studio-title"><div><span>ÁREA {String(tabs.findIndex(item => item.id === tab) + 1).padStart(2, "0")} / 04 · R7XIR</span><h2>{titles[tab] === "AIMBOT" ? "AJUSTES RÁPIDOS" : titles[tab]}</h2><p>{descriptions[tab]}</p></div><div className="aux-active-pill"><div className="aux-active-icon"><SpotifyMark /></div><div><b>{String(activeCount).padStart(2, "0")}</b><small>AJUSTES ATIVOS</small></div></div></div>
       {tab === "aimbot" && <div className="yx-aux-controls"><section className="aux-overview-card"><div className="aux-overview-mark"><SpotifyMark /></div><div className="aux-overview-copy"><span>SEU PERFIL · R7XIR</span><h3>Escolha o seu ritmo</h3><p>Ative apenas os ajustes que combinam com a sua configuração.</p></div><div className="aux-overview-count"><b>{activeCount}<small>/5</small></b><span>ATIVOS</span></div></section><div className="aux-panel-list yx-aim-list">
         <AuxToggle index={1} label="Assistência de Mira Leve" description="Movimento suave e natural" value={toggles.light} onClick={() => toggle("light")} />
         <AuxToggle index={2} label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" value={toggles.precise} onClick={() => toggle("precise")} />
@@ -423,7 +302,10 @@ function AuxilioPage() {
         <AuxModule name="Ajuste fino" icon={Gauge} active={toggles.fine} onClick={() => toggle("fine")} />
       </div>}
       {tab === "injection" && <div className="aux-injection yx-injection"><div className="aux-action-row"><button onClick={() => { openGame("normal"); inject("FF NORMAL"); }} disabled={Boolean(injecting)}>ABRIR FF NORMAL</button><button onClick={() => { openGame("max"); inject("FF MAX"); }} disabled={Boolean(injecting)}>ABRIR FF MAX</button></div><div className={`aux-injection-state ${active ? "active" : ""}`}>{injecting ? <><RefreshCw className="spin" size={18} /> Preparando...</> : active ? <><span className="aux-green-dot" /> {active} pronto</> : "Escolha uma versão do jogo"}</div><div className="aux-console">{logs.map((log, index) => <div key={`${log}-${index}`} className={log.includes("SUCESSO") ? "success" : ""}><span>[{new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}]</span> {log}</div>)}</div></div>}
-      <footer className="aux-footer">R7XIR <b> / PURPOU DEV</b></footer>
+      <footer className="aux-footer aux-studio-footer"><span>R7XIR <b>/ PURPOU DEV</b></span><span>CONTROLE · PERSONALIZAÇÃO · FOCO</span></footer>
+      <nav className="yx-aux-tabs aux-bottom-dock" aria-label="Navegação do Auxílio">
+        {tabs.map((item, index) => <button type="button" key={item.id} className={tab === item.id ? "active" : ""} aria-current={tab === item.id ? "page" : undefined} onClick={() => setTab(item.id)}><span className="aux-tab-icon">{item.icon && <item.icon size={18} />}</span><span className="aux-tab-label"><b>{item.label}</b><small>{tabHints[item.id]}</small></span><span className="aux-tab-index">0{index + 1}</span></button>)}
+      </nav>
     </section>
   </div>;
 }
@@ -444,8 +326,8 @@ function InfoPage() {
   return <div className="page-view">
     <PageHeading kicker="R7XIR" title="FEITO PARA OS FORTES." description="Precisão é detalhe. Controle é consistência." />
     <div className="about-layout">
-      <section className="about-eye-banner" aria-label="Banner R7XIR">
-        <img src="/rd-portrait.jpeg" alt="Retrato em preto e branco" />
+      <section className="about-eye-banner about-r7xir-banner" aria-label="Banner R7XIR">
+        <div className="about-art-grid" aria-hidden="true" /><div className="about-art-orbit" aria-hidden="true" /><div className="about-art-copy"><span>R7XIR / SOUND OF CONTROL</span><h2>FOCO NO SEU RITMO</h2><p>Um espaço simples para ajustar seu perfil.</p></div><div className="about-art-mark"><SpotifyMark /></div>
       </section>
       <section className="contact-panel">
         <span className="card-step">PRECISA DE AJUDA?</span>

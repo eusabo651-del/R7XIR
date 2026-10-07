@@ -268,10 +268,6 @@ html, body { background: linear-gradient(135deg, #030303 0%, #1b1b1b 52%, #05050
 .login-shell::before { opacity: .1; background-size: 64px 64px; mask-image: linear-gradient(to bottom, #000, transparent 82%); }
 .login-split-glow { background: linear-gradient(transparent, #d7d7d7, transparent); opacity: .24; }
 .login-content { width: min(1120px, calc(100% - 48px)); grid-template-columns: minmax(0, 1fr) minmax(380px, 440px); gap: clamp(42px, 6vw, 86px); padding-top: clamp(30px, 5vh, 62px); padding-bottom: clamp(28px, 5vh, 58px); }
-.login-photo { position: relative; width: min(100%, 560px); height: clamp(150px, 20vh, 205px); margin: 0 0 23px; overflow: hidden; border: 1px solid #5b5b5b; border-radius: 15px; background: #111; box-shadow: 0 20px 55px #0009; }
-.login-photo::after { position: absolute; inset: 0; content: ""; pointer-events: none; background: linear-gradient(180deg, transparent 32%, #000b 100%); }
-.login-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 43%; filter: grayscale(1) contrast(1.12); }
-.login-photo figcaption { position: absolute; z-index: 1; right: 14px; bottom: 12px; color: #e6e6e6; font-size: 8px; font-weight: 800; letter-spacing: .16em; }
 .brand-icon, .aux-brand { color: #0a0a0a; background: linear-gradient(145deg, #f8f8f8, #777); box-shadow: 0 8px 24px #0007; }
 .brand-name { letter-spacing: .1em; }
 .brand-caption, .secure-chip, .login-copy p, .login-footer, .login-stats span { color: #a7a7a7; }
@@ -300,8 +296,6 @@ html, body { background: linear-gradient(135deg, #030303 0%, #1b1b1b 52%, #05050
   .login-header .brand-caption { font-size: 7px; }
   .login-content { display: flex; flex-direction: column; align-items: stretch; gap: 18px; width: calc(100% - 28px); margin: 0 auto; padding: 18px 0 22px; }
   .login-copy { max-width: none; margin: 0; }
-  .login-photo { width: 100%; height: clamp(128px, 22svh, 170px); margin-bottom: 16px; border-radius: 13px; }
-  .login-photo figcaption { right: 11px; bottom: 10px; font-size: 7px; }
   .login-copy h1 { margin: 16px 0 10px; font-size: clamp(42px, 15vw, 58px); line-height: .9; }
   .login-copy p { max-width: 34em; font-size: 12px; line-height: 1.5; }
   .login-stats { gap: 24px; margin-top: 18px; }
@@ -321,7 +315,6 @@ html, body { background: linear-gradient(135deg, #030303 0%, #1b1b1b 52%, #05050
 
 @media (max-width: 380px), (max-height: 700px) and (max-width: 760px) {
   .login-content { gap: 15px; padding-top: 14px; }
-  .login-photo { height: 112px; margin-bottom: 12px; }
   .login-copy h1 { margin: 12px 0 8px; font-size: 43px; }
   .login-copy p { font-size: 11px; }
   .login-stats { margin-top: 13px; }
@@ -473,7 +466,6 @@ body { background: #060506; }
 .info-feature { background: radial-gradient(circle at 82% 18%, #232323 0, transparent 30%), #121011; }
 .about-layout { display: grid; gap: 16px; margin-top: 24px; }
 .about-eye-banner { position: relative; height: clamp(180px, 27vw, 310px); overflow: hidden; border: 1px solid #393939; border-radius: 16px; background: #090708; box-shadow: 0 18px 52px #0008; }
-.about-eye-banner img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 51%; filter: grayscale(1) contrast(1.04); }
 .about-eye-banner::after { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #08060825, transparent 58%, #08060818); content: ""; }
 .about-layout .contact-panel { margin: 0; }
 .quote-strip { border-color: #292929; background: #0c0a0c; }
@@ -484,7 +476,6 @@ body { background: #060506; }
 .yx-aux-page { width: min(1120px, calc(100% - 64px)); padding: 36px 0 56px; }
 .yx-aux-window { position: relative; overflow: hidden; width: 100%; padding: clamp(18px, 3vw, 34px); border: 1px solid #2f2f2f; border-radius: 20px; background: radial-gradient(ellipse at 4% 0%, #21212166, transparent 34%), linear-gradient(145deg, #121011, #090809 68%); box-shadow: 0 20px 65px #0009, 0 0 46px #6b6b6b0c; }
 .yx-aux-window::before { position: absolute; z-index: 1; inset: 0; pointer-events: none; border-radius: inherit; background-image: linear-gradient(135deg, #aaaaaa0a 1px, transparent 1px); background-size: 34px 34px; content: ""; mask-image: linear-gradient(to bottom right, #000, transparent 56%); }
-.yx-aux-window > .yx-aux-background { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 51%; opacity: .18; filter: grayscale(1) brightness(.62) contrast(1.08); pointer-events: none; }
 .yx-aux-window > :not(.yx-aux-background) { position: relative; z-index: 2; }
 .yx-aux-heading { display: flex; align-items: center; gap: 15px; min-height: 72px; padding: 2px 0 14px; }
 .yx-aux-heading-copy { min-width: 0; }
@@ -527,8 +518,6 @@ body { background: #060506; }
 .yx-injection .aux-injection-state { border-color: #2e2e2e; background: #100d10; }
 .yx-aux-window > .aux-footer { margin-top: 22px; padding-top: 15px; border-top-color: #292929; color: #767676; font-size: 9px; letter-spacing: .08em; }
 .yx-aux-window > .aux-footer b { color: #cecece; }
-.yx-login-photo { display: block; min-height: 0; border-color: #5b5b5b; background: #090909; }
-.yx-login-photo figcaption { color: #b6b6b6; }
 
 @media (max-width: 760px) {
   .yx-user-topbar { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "tools tools" "tabs tabs"; gap: 9px 12px; min-height: 0; padding: 10px 12px 0; }
@@ -583,10 +572,6 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 .login-header { position: relative; z-index: 3; width: min(1380px, calc(100% - 64px)); margin: 0 auto; padding-top: 25px; }
 .login-content { flex: 1; align-items: center; width: min(1380px, calc(100% - 64px)); grid-template-columns: minmax(0, 1.2fr) minmax(360px, .8fr); gap: clamp(28px, 5vw, 78px); margin: 0 auto; padding: 30px 0 25px; }
 .login-copy { position: relative; isolation: isolate; display: flex; flex-direction: column; justify-content: flex-end; max-width: none; min-height: min(700px, calc(100svh - 160px)); padding: clamp(28px, 4.5vw, 62px); overflow: hidden; border: 1px solid #505050; border-radius: 24px; background: #0b0b0b; box-shadow: 0 30px 90px #000b; }
-.login-photo, .login-photo.rd-login-photo { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; margin: 0; overflow: hidden; border: 0; border-radius: 0; background: #090909; box-shadow: none; }
-.login-photo::after { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, #0002 0%, #0002 34%, #000d 100%); content: ""; }
-.login-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 43%; filter: grayscale(1) brightness(.76) contrast(1.14); }
-.login-photo figcaption { position: absolute; z-index: 1; right: 18px; bottom: 17px; color: #dedede; font-size: 8px; font-weight: 800; letter-spacing: .18em; }
 .login-copy > .eyebrow, .login-copy h1, .login-copy p, .login-copy .login-stats { position: relative; z-index: 1; }
 .login-copy > .eyebrow { margin-bottom: 18px; color: #e7e7e7; }
 .login-copy h1 { margin: 0 0 16px; color: #fff; font-size: clamp(56px, 7.1vw, 98px); font-weight: 800; line-height: .86; letter-spacing: -.085em; }
@@ -634,7 +619,6 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 .yx-aux-page { width: min(1220px, calc(100% - 76px)); padding: 30px 0 48px; }
 .yx-aux-window { padding: clamp(24px, 3.4vw, 44px); border: 1px solid #444; border-radius: 24px; background: linear-gradient(145deg, #171717eF, #080808F5 74%); box-shadow: 0 28px 85px #000b; backdrop-filter: blur(18px); }
 .yx-aux-window::before { border-radius: inherit; background-image: linear-gradient(135deg, #fff1 1px, transparent 1px); background-size: 40px 40px; opacity: .6; }
-.yx-aux-window > .yx-aux-background { object-position: center 38%; opacity: .14; filter: grayscale(1) brightness(.43) contrast(1.16); }
 .yx-aux-heading { min-height: 96px; padding: 4px 0 22px; border-bottom: 1px solid #3a3a3a; }
 .yx-aux-heading-copy > span, .yx-aux-title > div > span { color: #c6c6c6; }
 .yx-aux-heading-copy h1 { font-size: clamp(25px, 4vw, 38px); letter-spacing: -.065em; }
@@ -658,7 +642,6 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 .yx-aux-window > .aux-footer { border-top-color: #393939; color: #929292; }
 .yx-aux-window > .aux-footer b { color: #ddd; }
 .about-eye-banner { height: clamp(250px, 34vw, 420px); border-color: #4a4a4a; border-radius: 22px; }
-.about-eye-banner img { object-position: center 42%; filter: grayscale(1) brightness(.78) contrast(1.12); }
 .contact-panel, .profile-card, .security-card { border-color: #444; background: linear-gradient(135deg, #202020, #0c0c0c 74%); }
 .quote-strip { border-color: #3e3e3e; background: #111; }
 .install-notice { border-color: #666; background: #171717ef; }
@@ -718,25 +701,11 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 }
 
 
-/* Partículas amostradas da própria fotografia: dissolvem e se recompõem em ciclo leve. */
-.rd-login-photo .rd-particle-base { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 43%; filter: grayscale(1) brightness(.76) contrast(1.14); opacity: .58; transition: opacity .2s linear; }
-.rd-login-photo .rd-particle-canvas { position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
-.rd-login-photo::after { z-index: 2; }
-.rd-login-photo figcaption { z-index: 3; }
-@media (prefers-reduced-motion: reduce) {
-  .rd-login-photo .rd-particle-canvas { mix-blend-mode: normal; }
-}
-
-
-/* Chuva global de pequenos recortes da fotografia enviada; não intercepta controles. */
-.rd-particle-rain { position: fixed; z-index: 70; inset: 0; display: block; width: 100vw; height: 100vh; pointer-events: none; opacity: .52; mix-blend-mode: screen; }
-
 /* Layout da aba Auxílio inspirado na gravação: trilho lateral, painel único e destaque vermelho. */
 .app-shell.rd-user-shell { filter: none; }
 .rd-user-main .page-view:not(.yx-aux-page) { filter: grayscale(1); }
 .yx-aux-page { width: min(1040px, calc(100% - 56px)) !important; padding: 38px 0 64px !important; }
 .yx-aux-window { display: grid !important; grid-template-columns: 84px minmax(0, 1fr); grid-template-rows: auto auto auto auto; column-gap: 30px; min-height: 610px; padding: 26px 30px 21px !important; border: 1px solid #303136; border-radius: 24px; background: #151619 !important; box-shadow: 0 28px 80px #000b; }
-.yx-aux-window > .yx-aux-background { opacity: .07 !important; }
 .yx-aux-window > .yx-aux-heading { grid-column: 2; grid-row: 1; min-height: 77px; padding: 3px 0 19px; border-bottom: 1px solid #303136; }
 .yx-aux-heading-copy > span, .yx-aux-title > div > span { color: #a9aaaf; }
 .yx-aux-heading-copy h1 { color: #f5f5f6; font-size: clamp(23px, 3.5vw, 31px); text-transform: uppercase; }
@@ -801,11 +770,3 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 
 /* Ícone Spotify da navegação do Auxílio. */
 .yx-module-grid .aux-module { gap: 12px; }
-
-/* Banner de Scarface no cabeçalho da aba Auxílio. */
-.yx-aux-window > .yx-aux-heading { min-height: 146px; }
-.aux-scarface-banner { display: block; width: min(100%, 560px); height: 74px; margin: 14px 0 10px; border: 1px solid #3b3b3b; border-radius: 9px; object-fit: cover; object-position: center; filter: brightness(.82) contrast(1.12); }
-@media (max-width: 760px) {
-  .yx-aux-window > .yx-aux-heading { min-height: 119px; }
-  .aux-scarface-banner { height: 51px; margin: 10px 0 8px; border-radius: 7px; }
-}
