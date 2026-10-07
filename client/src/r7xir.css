@@ -1,0 +1,78 @@
+/* R7XIR: identidade azul, símbolo Spotify e painel de controles em cartões variados. */
+:root { --r7-blue: #1684f7; --r7-blue-bright: #42a5ff; --r7-blue-deep: #0755c9; --r7-blue-soft: #112847; }
+.login-shell { background: radial-gradient(ellipse at 8% 15%, #0c3b70 0, transparent 36%), linear-gradient(132deg, #050b14 0%, #101d31 54%, #060b13 100%); }
+.login-card { border-color: #275a8b; background: linear-gradient(145deg, #10243a, #0a1420); box-shadow: 0 18px 60px #007bff18; }
+.login-split-glow { background: linear-gradient(transparent, var(--r7-blue), transparent); opacity: .38; }
+.login-copy h1 em, .login-copy .eyebrow-dot, .hero-copy h1 strong, .hero-meta svg, .step-index, .value-icon { color: var(--r7-blue-bright) !important; }
+.brand-icon { border-color: #55adff; color: #fff; background: linear-gradient(145deg, #2196ff, #0753cc); box-shadow: 0 8px 26px #087bff55; }
+.brand-spotify { display: block; width: 25px; height: 25px; }
+.brand-name { color: #fff; }
+.secure-chip, .tag-red { border-color: #2466a8; color: #91c9ff; background: #0b2745; }
+.notice-pulse { border-color: #327ec2; background: linear-gradient(145deg, #188cf4, #0753cc); }
+.footer-red { color: #42a5ff !important; }
+.primary-button, .generate-button, .aux-action-row button { border-color: #1684f7; color: #fff; background: linear-gradient(135deg, #2096ff, #0758d0); box-shadow: 0 10px 25px #006be744; }
+.primary-button:hover, .generate-button:hover, .aux-action-row button:hover { color: #fff; background: linear-gradient(135deg, #49aaff, #126cdf); }
+.input-shell:focus-within, .select-shell:focus-within, .search-shell:focus-within { border-color: #1684f7; box-shadow: 0 0 0 3px #1684f722; }
+.rd-user-nav button.active { border-color: #255b91; background: linear-gradient(115deg, #14365b, #10243b); }
+.rd-user-nav button.active::before { background: var(--r7-blue); }
+.rd-user-nav button.active svg, .yx-aux-tabs button.active svg { color: #66b8ff; }
+.yx-aux-window { border-color: #23466c !important; background: linear-gradient(145deg, #101c2c, #08111e 74%) !important; }
+.yx-aux-window > .yx-aux-heading { border-bottom-color: #213b57; }
+.yx-aux-status i { background: #35a0ff; box-shadow: 0 0 12px #1684f799; }
+.yx-aux-tabs button.active { border-color: #1d5c9e; background: #102b49; box-shadow: inset 3px 0 #1684f7, 0 8px 20px #0007; }
+.yx-aux-tabs button.active svg { color: #55adff; }
+.yx-aux-window > .yx-aux-controls { grid-column: 2; grid-row: 3; display: grid; align-content: start; gap: 14px; min-width: 0; }
+.aux-overview-card { position: relative; display: flex; align-items: center; gap: 17px; min-height: 112px; padding: 18px 20px; overflow: hidden; border: 1px solid #23466c; border-radius: 16px; background: radial-gradient(ellipse at 10% 10%, #1766ac55, transparent 55%), linear-gradient(125deg, #142d49, #101b2b); }
+.aux-overview-card::after { position: absolute; top: -38px; right: 62px; width: 125px; height: 125px; border: 1px solid #5db4ff1c; border-radius: 50%; box-shadow: 0 0 0 18px #5db4ff08, 0 0 0 38px #5db4ff06; content: ""; }
+.aux-overview-mark { display: grid; flex: 0 0 56px; width: 56px; height: 56px; place-items: center; border: 1px solid #469ff4; border-radius: 17px; background: linear-gradient(145deg, #188cf4, #0759c4); box-shadow: 0 8px 24px #0074e855; }
+.aux-overview-mark .spotify-mark { width: 33px; height: 33px; }
+.aux-overview-copy { min-width: 0; }
+.aux-overview-copy > span { color: #6bb9ff; font-size: 8px; font-weight: 800; letter-spacing: .16em; }
+.aux-overview-copy h3 { margin: 5px 0 3px; color: #f4f8ff; font-size: 17px; letter-spacing: -.035em; }
+.aux-overview-copy p { margin: 0; color: #a4b6cb; font-size: 10px; line-height: 1.5; }
+.aux-overview-count { z-index: 1; display: grid; flex: 0 0 auto; justify-items: end; gap: 3px; margin-left: auto; }
+.aux-overview-count b { color: #fff; font-size: 25px; line-height: 1; }
+.aux-overview-count b small { color: #a5bedb; font-size: 12px; }
+.aux-overview-count > span { color: #76bcff; font-size: 7px; font-weight: 800; letter-spacing: .14em; }
+.yx-aim-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; margin-top: 0; }
+.aux-toggle-row.yx-aim-row { display: grid; grid-template-columns: 26px 38px minmax(0, 1fr) auto; align-items: center; gap: 11px; min-height: 91px; padding: 14px 13px; border: 1px solid #21364e; border-radius: 14px; background: linear-gradient(145deg, #111f31, #0b1523); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+.aux-toggle-row.yx-aim-row:hover { transform: translateY(-2px); border-color: #2767a4; background: linear-gradient(145deg, #172c45, #0d1929); }
+.aux-toggle-row.yx-aim-row:first-child { grid-column: span 2; min-height: 101px; background: linear-gradient(115deg, #143b62, #10233a 65%, #101b2b); }
+.aux-card-index { align-self: start; padding-top: 2px; color: #5ca9f4; font-size: 9px; font-weight: 900; letter-spacing: .08em; }
+.aux-control-mark, .aux-module-mark { display: grid; flex: 0 0 38px; width: 38px; height: 38px; place-items: center; border: 1px solid #20548a; border-radius: 12px; background: #102f50; }
+.aux-control-mark .spotify-mark, .aux-module-mark .spotify-mark { width: 24px; height: 24px; }
+.aux-toggle-row.yx-aim-row:first-child .aux-control-mark { border-color: #388ee0; background: linear-gradient(145deg, #197fda, #0c58a5); }
+.aux-control-copy { display: grid; gap: 5px; min-width: 0; text-align: left; }
+.aux-control-copy b { color: #edf6ff; font-size: 11px; line-height: 1.35; }
+.aux-control-copy small { color: #8ea6bf; font-size: 9px; line-height: 1.4; }
+.aux-control-state { display: grid; justify-items: center; gap: 4px; }
+.aux-control-state > i { position: relative; display: block; width: 36px; height: 21px; border: 1px solid #3b526c; border-radius: 20px; background: #1d2c3d; transition: .2s ease; }
+.aux-control-state > i em { position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; border-radius: 50%; background: #91a3b6; transition: .2s ease; }
+.aux-control-state > i.on { border-color: #1684f7; background: #1269bf; }
+.aux-control-state > i.on em { transform: translateX(15px); background: #fff; }
+.aux-control-state > small { color: #7890a9; font-size: 7px; font-weight: 900; letter-spacing: .12em; }
+.aux-toggle-row.yx-aim-row[aria-pressed="true"] .aux-control-state > small { color: #62b5ff; }
+.yx-module-grid .aux-module { display: flex; align-items: center; gap: 13px; border-color: #21364e; background: linear-gradient(145deg, #111f31, #0b1523); }
+.yx-module-grid .aux-module.active { border-color: #246eb4; background: linear-gradient(145deg, #153b62, #10243a); }
+.yx-module-grid .aux-module.active i { color: #fff; background: #167ce2; }
+.yx-injection .aux-action-row button { border-color: #207ad1; background: linear-gradient(125deg, #1769ae, #113b67); }
+.yx-injection .aux-action-row button:hover { border-color: #59adff; background: #18558d; }
+.yx-injection .aux-injection-state.active { color: #57adff; border-color: #22558a; background: #102b48; }
+.yx-aux-window > .aux-footer { border-top-color: #213b57; }
+.install-notice { border-color: #216eb5; background: #0e2034f2; }
+.install-notice > button:not(.notice-close) { color: #fff; background: linear-gradient(135deg, #2096ff, #0758d0); }
+.install-spotify { display: block; width: 22px; height: 22px; }
+@media (max-width: 760px) {
+  .yx-aux-window > .yx-aux-controls { gap: 11px; }
+  .aux-overview-card { min-height: 94px; gap: 11px; padding: 13px 12px; border-radius: 13px; }
+  .aux-overview-mark { flex-basis: 43px; width: 43px; height: 43px; border-radius: 13px; }
+  .aux-overview-mark .spotify-mark { width: 26px; height: 26px; }
+  .aux-overview-copy h3 { font-size: 14px; }
+  .aux-overview-copy p { max-width: 240px; font-size: 9px; }
+  .aux-overview-count b { font-size: 21px; }
+  .yx-aim-list { grid-template-columns: 1fr; gap: 8px; }
+  .aux-toggle-row.yx-aim-row, .aux-toggle-row.yx-aim-row:first-child { grid-column: auto; min-height: 75px; gap: 8px; padding: 10px; }
+  .aux-toggle-row.yx-aim-row:first-child { min-height: 82px; }
+  .aux-control-copy b { font-size: 10px; }
+  .aux-control-copy small { font-size: 8px; }
+}

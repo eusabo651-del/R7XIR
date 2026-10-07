@@ -1,13 +1,16 @@
-# AUXÍLIO DO RD
+# R7XIR
 
-Painel web responsivo com identidade monocromática em gradiente cinza e preto, fotografia em destaque, PWA e navegação lateral responsiva. Mantém autenticação por key, gerador de sensibilidade, histórico/favoritos, páginas Auxílio, Sobre e Conta, além do painel administrativo.
+Painel web responsivo com tema azul, marca R7XIR, símbolo Spotify, cartões de controles redesenhados e suporte PWA para instalação na tela inicial. Inclui autenticação por chave, gerador de sensibilidade, histórico/favoritos, páginas Auxílio, Sobre e Conta e painel administrativo.
 
 ## Desenvolver e validar
 
 ```bash
 pnpm install --frozen-lockfile
+cp .env.example .env
 pnpm dev
 ```
+
+Antes de executar localmente, substitua `replace-with-a-random-secret-generated-by-openssl-rand-hex-32` em `.env` por um valor gerado com `openssl rand -hex 32`.
 
 ```bash
 pnpm check
@@ -17,35 +20,18 @@ pnpm build
 
 ## Deploy na Vercel
 
-Importe este repositório na Vercel e configure estas variáveis de ambiente para Production (e Preview/Development se usar esses ambientes):
+Configure estas variáveis de ambiente na Vercel para Production (e Preview/Development se usar esses ambientes):
 
-- `RBXIS_ADMIN_KEY`: defina uma chave privada e exclusiva no painel da Vercel; não a inclua no código ou no repositório.
-- `RBXIS_SESSION_SECRET`: segredo aleatório longo, diferente deste exemplo. Gere um valor novo com `openssl rand -hex 32`. Não compartilhe nem o commite.
-- `MOCKAPI_KEYS_URL`: `https://6ac2d1c03f4ae78f69453b4b.mockapi.io/scarkeys` (opcional; este é o padrão do projeto). Se a variável já estiver definida na Vercel, atualize-a para essa URL.
+- `RBXIS_ADMIN_KEY`: `R7XMIN00` — chave de acesso administrativo, lida pelo servidor a partir do ambiente.
+- `RBXIS_SESSION_SECRET`: segredo aleatório longo. Gere um valor exclusivo com `openssl rand -hex 32`; não o compartilhe nem o commite.
+- `MOCKAPI_KEYS_URL`: `https://6ac66d7ebea0e72cf5c906ed.mockapi.io/users` (padrão do projeto).
 
-O login administrativo só funciona com `RBXIS_ADMIN_KEY`; o login de usuários e o Admin falham de forma segura se `RBXIS_SESSION_SECRET` não estiver definido, e o Admin também falha de forma segura se sua própria variável estiver ausente. Segredos não são embutidos no código nem devolvidos como nome de usuário.
+O login falha de forma segura quando `RBXIS_SESSION_SECRET` ou `RBXIS_ADMIN_KEY` não estiverem configurados. Para segurança, não reutilize a chave administrativa em outros serviços.
 
 ## MockAPI
 
-A coleção configurada é `https://6ac2d1c03f4ae78f69453b4b.mockapi.io/scarkeys`. O código não cria coleções automaticamente. Se o schema da collection estiver restritivo, inclua os seguintes campos para compatibilidade com as funções do painel:
-
-| Campo | Tipo esperado | Uso |
-|---|---|---|
-| `key` | String | credencial gerada |
-| `username` | String | nome associado à key |
-| `used` | Boolean | indica ativação |
-| `device` | String | HWID vinculado |
-| `expire` | Number | duração em dias ou horas conforme `type` |
-| `type` | String | `daily`, `weekly`, `monthly`, `yearly`, `hourly` ou `perm` |
-| `createdAt` | Number | criação (Unix seconds) |
-| `activatedAt` | Number | primeira ativação (Unix seconds; `0` enquanto pendente) |
-| `expiresAt` | Number | expiração (Unix seconds; calculada na ativação) |
-| `status` | String | `active`, `revoked` ou `blocked` |
-| `onlineAt` | Number | última atividade (Unix seconds) |
-| `history` | Array/Object | histórico de sensibilidades e favoritos |
-
-O campo `id` é criado pela MockAPI. Não é necessário apagar a collection nem modificar registros existentes. A opção de 1 hora mantém `type: hourly`, `expire: 1` e inicia a contagem na primeira ativação.
+A coleção configurada é `https://6ac66d7ebea0e72cf5c906ed.mockapi.io/users`. O endpoint respondeu com coleção vazia durante a preparação do repositório. O painel usa os campos `key`, `username`, `used`, `device`, `expire`, `type`, `createdAt`, `activatedAt`, `expiresAt`, `status`, `onlineAt` e `history`; o campo `id` é criado pela MockAPI.
 
 ## PWA
 
-O manifesto, service worker, ícones derivados da fotografia enviada e metadados de instalação estão em `client/public/` e `client/index.html`. Para ver a versão mais recente no iPhone depois do deploy, feche e reabra o PWA; se o cache antigo persistir, remova o atalho da tela inicial e adicione-o novamente pelo Safari.
+O manifesto, service worker, favicons e ícones azuis do R7XIR ficam em `client/public/`; os metadados de instalação ficam em `client/index.html`. O símbolo Spotify foi obtido de [IconsDB](https://www.iconsdb.com/spotify-icons/spotify-icon-256.html). Se o ícone antigo persistir no iPhone após o deploy, remova o atalho e instale novamente pelo Safari.

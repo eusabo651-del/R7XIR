@@ -46,6 +46,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import { SpotifyMark } from "@/components/SpotifyMark";
 import { trpc } from "@/lib/trpc";
 import {
   DURATION_UNITS,
@@ -118,8 +119,8 @@ function formatExpiry(value: string | Date | null | undefined) {
 function AppLogo({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`brand-mark ${compact ? "brand-mark-compact" : ""}`}>
-      <div className="brand-icon"><span>RD</span></div>
-      {!compact && <div><span className="brand-name">AUXÍLIO DO RD</span><span className="brand-caption">CENTRAL DE AUXÍLIO</span></div>}
+      <div className="brand-icon"><SpotifyMark className="brand-spotify" /></div>
+      {!compact && <div><span className="brand-name">R7XIR</span><span className="brand-caption">CENTRAL DE CONTROLE</span></div>}
     </div>
   );
 }
@@ -280,7 +281,7 @@ function LoginScreen() {
         <div className="login-copy">
           <figure className="login-photo rd-login-photo"><ParticlePortrait src="/rd-portrait.jpeg" /><figcaption>PURPOU DEV / 2026</figcaption></figure>
           <span className="eyebrow"><span className="eyebrow-dot" /> ACESSO EXCLUSIVO</span>
-          <h1>AUXÍLIO<br /><em>DO RD</em></h1>
+          <h1>R7XIR</h1>
           <p>Entre com sua chave e acesse seu espaço de controle.</p>
           <div className="login-stats"><div><b>01</b><span>PURPOU<br />DEV</span></div><div><b>∞</b><span>PURPOU<br />DEV</span></div></div>
         </div>
@@ -290,7 +291,7 @@ function LoginScreen() {
             <div className="login-card-heading"><div className="card-icon"><LockKeyhole size={21} /></div><div><span className="mini-label">{adminMode ? "PRIVATE" : "ACESSO PRIVATE"}</span><h2>{adminMode ? "Painel administrativo" : "Coloque sua chave abaixo"}</h2></div></div>
             <p className="card-description">{adminMode ? "Acesso restrito ao administrador." : "Informe sua chave de acesso para continuar."}</p>
             <form onSubmit={submit} className="login-form">
-              <label><span>{adminMode ? "Chave de administrador" : "Chave de acesso"}</span><div className="input-shell"><KeyRound size={17} /><input value={accessKey} onChange={event => setAccessKey(event.target.value)} placeholder={adminMode ? "XXXXXXXXXX" : "RD-XXX-XXXXXXXXXX"} type="password" autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} required /><button type="button" className="input-action" onClick={() => setAccessKey("")} aria-label="Limpar chave"><X size={15} /></button></div></label>
+              <label><span>{adminMode ? "Chave de administrador" : "Chave de acesso"}</span><div className="input-shell"><KeyRound size={17} /><input value={accessKey} onChange={event => setAccessKey(event.target.value)} placeholder={adminMode ? "XXXXXXXXXX" : "R7XIR-XXX-XXXXXXXXXX"} type="password" autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} required /><button type="button" className="input-action" onClick={() => setAccessKey("")} aria-label="Limpar chave"><X size={15} /></button></div></label>
               <button className="primary-button login-button" disabled={pending}>{pending ? <><RefreshCw size={17} className="spin" /> VALIDANDO...</> : <>{adminMode ? "ENTRAR NO ADMIN" : "ENTRAR NO PAINEL"}<ChevronRight size={18} /></>}</button>
             </form>
             <button type="button" className="text-button admin-toggle" onClick={() => { setAdminMode(value => !value); setAccessKey(""); }}>{adminMode ? "Voltar para acesso de usuário" : "Acesso administrativo"}<ChevronRight size={14} /></button>
@@ -298,7 +299,7 @@ function LoginScreen() {
           </div>
         </div>
       </section>
-      <footer className="login-footer"><span>AUXÍLIO DO RD / PURPOU DEV</span><span>Auxilio</span><span className="footer-red">●</span></footer>
+      <footer className="login-footer"><span>R7XIR / PURPOU DEV</span><span>PAINEL</span><span className="footer-red">●</span></footer>
       <InstallNotice />
     </main>
   );
@@ -316,7 +317,7 @@ function InstallNotice() {
   }, []);
   if (!visible) return null;
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  return <>{<div className="install-notice"><div className="notice-pulse"><MonitorSmartphone size={18} /></div><div><b>Coloque o AUXÍLIO DO RD na tela inicial</b><span>Abra como um app no seu telefone.</span></div><button onClick={async () => { if (installEvent) { await installEvent.prompt(); setVisible(false); } else if (isIos) setIosGuide(true); else if (navigator.share) { await navigator.share({ title: "AUXÍLIO DO RD", text: "Abrir o AUXÍLIO DO RD", url: window.location.href }); setVisible(false); } else toast.info("Toque no menu Compartilhar do navegador e escolha 'Adicionar à tela inicial'."); }} aria-label="Adicionar à tela inicial"><ChevronRight size={18} /></button><button className="notice-close" onClick={() => setVisible(false)} aria-label="Fechar aviso"><X size={15} /></button></div>}{iosGuide && <div className="ios-install-guide" role="dialog" aria-modal="true"><div className="ios-guide-card"><div className="ios-guide-icon"><Share2 size={22} /></div><span className="eyebrow"><span className="eyebrow-dot" /> SAFARI / IPHONE</span><h2>Adicionar à Tela de Início</h2><p>Toque no ícone <b>Compartilhar</b> na barra inferior do Safari, como na imagem, e depois escolha <b>Adicionar à Tela de Início</b>.</p><div className="ios-share-hint"><Share2 size={25} /><span>Ícone Compartilhar</span><ChevronRight size={16} /><span>Adicionar à Tela de Início</span></div><button className="primary-button" onClick={() => setIosGuide(false)}>Entendi</button></div></div>}</>;
+  return <>{<div className="install-notice"><div className="notice-pulse"><SpotifyMark className="install-spotify" /></div><div><b>Coloque o R7XIR na tela inicial</b><span>Abra como um app no seu telefone.</span></div><button onClick={async () => { if (installEvent) { await installEvent.prompt(); setVisible(false); } else if (isIos) setIosGuide(true); else if (navigator.share) { await navigator.share({ title: "R7XIR", text: "Abrir o R7XIR", url: window.location.href }); setVisible(false); } else toast.info("Toque no menu Compartilhar do navegador e escolha 'Adicionar à tela inicial'."); }} aria-label="Adicionar à tela inicial"><ChevronRight size={18} /></button><button className="notice-close" onClick={() => setVisible(false)} aria-label="Fechar aviso"><X size={15} /></button></div>}{iosGuide && <div className="ios-install-guide" role="dialog" aria-modal="true"><div className="ios-guide-card"><div className="ios-guide-icon"><Share2 size={22} /></div><span className="eyebrow"><span className="eyebrow-dot" /> SAFARI / IPHONE</span><h2>Adicionar à Tela de Início</h2><p>Toque no ícone <b>Compartilhar</b> na barra inferior do Safari, como na imagem, e depois escolha <b>Adicionar à Tela de Início</b>.</p><div className="ios-share-hint"><Share2 size={25} /><span>Ícone Compartilhar</span><ChevronRight size={16} /><span>Adicionar à Tela de Início</span></div><button className="primary-button" onClick={() => setIosGuide(false)}>Entendi</button></div></div>}</>;
 }
 
 function UserShell({ children, view, onChangeView, session, onLogout }: { children: React.ReactNode; view: View; onChangeView: (view: View) => void; session: { username: string; planId: string; expiresAt: Date | string; deviceId?: string | null }; onLogout: () => void }) {
@@ -369,6 +370,7 @@ function AuxilioPage() {
   const [active, setActive] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>(["[SISTEMA] Auxílio carregado com segurança."]);
   const toggle = (key: keyof typeof toggles) => setToggles(value => ({ ...value, [key]: !value[key] }));
+  const activeCount = Object.values(toggles).filter(Boolean).length;
   const inject = (mode: string) => {
     setInjecting(mode); setActive(null); setLogs(value => [...value, `[INFO] Preparando ${mode}...`]);
     window.setTimeout(() => { setInjecting(null); setActive(mode); setLogs(value => [...value, `[SUCESSO] ${mode} ativo e funcionando!`]); toast.success("Módulo ativado"); }, 1500);
@@ -398,20 +400,20 @@ function AuxilioPage() {
     <section className="yx-aux-window">
       <img className="yx-aux-background" src="/rd-portrait.jpeg" alt="" aria-hidden="true" />
       <header className="yx-aux-heading">
-        <div className="yx-aux-heading-copy"><span>RD MIRA</span><img className="aux-scarface-banner" src="/scarface-banner.jpg" alt="Scarface" /><p>Ajustes de mira, desempenho e módulos em um só lugar.</p></div>
+        <div className="yx-aux-heading-copy"><span>R7XIR</span><img className="aux-scarface-banner" src="/scarface-banner.jpg" alt="Scarface" /><p>Ajustes de mira, desempenho e módulos em um só lugar.</p></div>
         <span className="yx-aux-status"><i /> ONLINE</span>
       </header>
       <nav className="yx-aux-tabs" aria-label="Seções do auxílio">
         {tabs.map(item => <button key={item.id} className={tab === item.id ? "active" : ""} onClick={() => setTab(item.id)}>{item.icon && <item.icon size={17} />}<span>{item.label}</span></button>)}
       </nav>
-      <div className="yx-aux-title"><div><span>AUXÍLIO DO RD / {titles[tab]}</span><h2>{titles[tab] === "AIMBOT" ? "AUXILIO DE MIRA" : titles[tab]}</h2><p>{descriptions[tab]}</p></div></div>
-      {tab === "aimbot" && <div className="aux-panel-list yx-aim-list">
-        <AuxToggle label="Assistência de Mira Leve" description="Movimento suave e natural" value={toggles.light} icon={Crosshair} onClick={() => toggle("light")} />
-        <AuxToggle label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" value={toggles.precise} icon={Target} onClick={() => toggle("precise")} />
-        <AuxToggle label="Estabilização de Mira" description="Movimento mais consistente" value={toggles.stabilize} icon={Anchor} onClick={() => toggle("stabilize")} />
-        <AuxToggle label="Controle de Recuo" description="Ajuste fino do controle" value={toggles.recoil} icon={MoveDown} onClick={() => toggle("recoil")} />
-        <AuxToggle label="Ajuste Fino de Precisão" description="Personalize o perfil de mira" value={toggles.fine} icon={Gauge} onClick={() => toggle("fine")} />
-      </div>}
+      <div className="yx-aux-title"><div><span>R7XIR / {titles[tab]}</span><h2>{titles[tab] === "AIMBOT" ? "AJUSTES RÁPIDOS" : titles[tab]}</h2><p>{descriptions[tab]}</p></div></div>
+      {tab === "aimbot" && <div className="yx-aux-controls"><section className="aux-overview-card"><div className="aux-overview-mark"><SpotifyMark /></div><div className="aux-overview-copy"><span>SEU PERFIL · R7XIR</span><h3>Escolha o seu ritmo</h3><p>Ative apenas os ajustes que combinam com a sua configuração.</p></div><div className="aux-overview-count"><b>{activeCount}<small>/5</small></b><span>ATIVOS</span></div></section><div className="aux-panel-list yx-aim-list">
+        <AuxToggle index={1} label="Assistência de Mira Leve" description="Movimento suave e natural" value={toggles.light} onClick={() => toggle("light")} />
+        <AuxToggle index={2} label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" value={toggles.precise} onClick={() => toggle("precise")} />
+        <AuxToggle index={3} label="Estabilização de Mira" description="Movimento mais consistente" value={toggles.stabilize} onClick={() => toggle("stabilize")} />
+        <AuxToggle index={4} label="Controle de Recuo" description="Ajuste fino do controle" value={toggles.recoil} onClick={() => toggle("recoil")} />
+        <AuxToggle index={5} label="Ajuste Fino de Precisão" description="Personalize o perfil de mira" value={toggles.fine} onClick={() => toggle("fine")} />
+      </div></div>}
       {tab === "sensi" && <div className="aux-center-panel yx-performance-panel"><Gauge size={38} /><h2>Selecione seu celular</h2><p>Escolha a plataforma para continuar no gerador.</p><div className="aux-choice-row"><button onClick={() => toast.info("Abra o Gerador e selecione iOS")}>iOS</button><button className="selected" onClick={() => toast.info("Abra o Gerador e selecione Android")}>Android</button></div></div>}
       {tab === "modules" && <div className="aux-module-grid yx-module-grid">
         <AuxModule name="Mira leve" icon={Crosshair} active={toggles.light} onClick={() => toggle("light")} />
@@ -421,12 +423,12 @@ function AuxilioPage() {
         <AuxModule name="Ajuste fino" icon={Gauge} active={toggles.fine} onClick={() => toggle("fine")} />
       </div>}
       {tab === "injection" && <div className="aux-injection yx-injection"><div className="aux-action-row"><button onClick={() => { openGame("normal"); inject("FF NORMAL"); }} disabled={Boolean(injecting)}>ABRIR FF NORMAL</button><button onClick={() => { openGame("max"); inject("FF MAX"); }} disabled={Boolean(injecting)}>ABRIR FF MAX</button></div><div className={`aux-injection-state ${active ? "active" : ""}`}>{injecting ? <><RefreshCw className="spin" size={18} /> Preparando...</> : active ? <><span className="aux-green-dot" /> {active} pronto</> : "Escolha uma versão do jogo"}</div><div className="aux-console">{logs.map((log, index) => <div key={`${log}-${index}`} className={log.includes("SUCESSO") ? "success" : ""}><span>[{new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}]</span> {log}</div>)}</div></div>}
-      <footer className="aux-footer">RD AUXÍLIO DE MIRA <b> / PURPOU DEV</b></footer>
+      <footer className="aux-footer">R7XIR <b> / PURPOU DEV</b></footer>
     </section>
   </div>;
 }
-function AuxToggle({ label, description, value, icon: _Icon, onClick }: { label: string; description: string; value: boolean; icon: React.ElementType; onClick: () => void }) { return <button type="button" className="aux-toggle-row yx-aim-row" aria-pressed={value} onClick={onClick}><img className="ump-weapon" src="/ump-free-fire.webp" alt="UMP do Free Fire" /><span><b>{label}</b><small>{description}</small></span><i className={value ? "on" : ""}><em /></i></button>; }
-function AuxModule({ name, icon: _Icon, active, onClick }: { name: string; icon: React.ElementType; active: boolean; onClick: () => void }) { return <button className={`aux-module ${active ? "active" : ""}`} onClick={onClick}><img className="ump-weapon" src="/ump-free-fire.webp" alt="UMP do Free Fire" /><span><b>{name}</b><small>{active ? "Ativado" : "Toque para ativar"}</small></span><i>{active ? <Check size={14} /> : <ChevronRight size={15} />}</i></button>; }
+function AuxToggle({ index, label, description, value, onClick }: { index: number; label: string; description: string; value: boolean; onClick: () => void }) { return <button type="button" className="aux-toggle-row yx-aim-row" aria-pressed={value} onClick={onClick}><span className="aux-card-index">{String(index).padStart(2, "0")}</span><span className="aux-control-mark"><SpotifyMark /></span><span className="aux-control-copy"><b>{label}</b><small>{description}</small></span><span className="aux-control-state"><i className={value ? "on" : ""}><em /></i><small>{value ? "ON" : "OFF"}</small></span></button>; }
+function AuxModule({ name, icon: _Icon, active, onClick }: { name: string; icon: React.ElementType; active: boolean; onClick: () => void }) { return <button className={`aux-module ${active ? "active" : ""}`} onClick={onClick}><span className="aux-module-mark"><SpotifyMark /></span><span><b>{name}</b><small>{active ? "Ativado" : "Toque para ativar"}</small></span><i>{active ? <Check size={14} /> : <ChevronRight size={15} />}</i></button>; }
 
 function HistoryPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
   const query = favoritesOnly ? trpc.generator.favorites.useQuery() : trpc.generator.history.useQuery();
@@ -440,9 +442,9 @@ function EmptyState({ favoritesOnly }: { favoritesOnly: boolean }) { return <div
 
 function InfoPage() {
   return <div className="page-view">
-    <PageHeading kicker="AUXÍLIO DO RD" title="FEITO PARA OS FORTES." description="Precisão é detalhe. Controle é consistência." />
+    <PageHeading kicker="R7XIR" title="FEITO PARA OS FORTES." description="Precisão é detalhe. Controle é consistência." />
     <div className="about-layout">
-      <section className="about-eye-banner" aria-label="Banner AUXÍLIO DO RD">
+      <section className="about-eye-banner" aria-label="Banner R7XIR">
         <img src="/rd-portrait.jpeg" alt="Retrato em preto e branco" />
       </section>
       <section className="contact-panel">
@@ -469,7 +471,7 @@ function UserApp({ session, onLogout }: { session: { username: string; planId: s
 function AdminShell({ children, view, onChangeView, onLogout }: { children: React.ReactNode; view: AdminView; onChangeView: (view: AdminView) => void; onLogout: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const go = (next: AdminView) => { onChangeView(next); setMenuOpen(false); };
-  return <div className="admin-shell"><button className="admin-menu-button" onClick={() => setMenuOpen(value => !value)} aria-label="Abrir menu"><Menu size={20} /></button>{menuOpen && <div className="admin-menu-popover"><b>AUXÍLIO DO RD ADMIN</b><button onClick={() => go("overview")}><Settings2 size={16} /> Config</button><button onClick={() => go("licenses")}><PackagePlus size={16} /> Gerenciar</button><button onClick={() => go("licenses")}><KeyRound size={16} /> Chaves</button></div>}<aside className="admin-sidebar"><div className="admin-logo"><AppLogo /><span className="admin-badge">ADMIN</span></div><div className="admin-nav"><span className="sidebar-section-label">CONTROLE</span><button className={view === "overview" ? "active" : ""} onClick={() => go("overview")}><LayoutDashboard size={18} /> Config</button><button className={view === "licenses" ? "active" : ""} onClick={() => go("licenses")}><KeyRound size={18} /> Chaves</button></div><div className="admin-sidebar-footer"><div className="admin-identity"><div className="admin-avatar"><Crown size={16} /></div><div><b>AUXÍLIO DO RD</b><span>Administrador</span></div></div><button className="sidebar-logout" onClick={onLogout}><LogOut size={16} /> Sair</button></div></aside><main className="admin-main"><header className="admin-topbar"><div className="admin-mobile-logo"><AppLogo compact /></div><div><span className="topbar-kicker">CONTROL CENTER</span><h2>Olá, AUXÍLIO DO RD <Crown size={18} /></h2></div><div className="admin-top-actions"><span className="admin-online"><span className="online-dot" /> SISTEMA ONLINE</span><button className="icon-button" onClick={() => toast.info("Painel atualizado")}><RefreshCw size={17} /></button><button className="admin-mobile-exit" onClick={onLogout}><LogOut size={16} /></button></div></header>{children}</main></div>;
+  return <div className="admin-shell"><button className="admin-menu-button" onClick={() => setMenuOpen(value => !value)} aria-label="Abrir menu"><Menu size={20} /></button>{menuOpen && <div className="admin-menu-popover"><b>R7XIR ADMIN</b><button onClick={() => go("overview")}><Settings2 size={16} /> Config</button><button onClick={() => go("licenses")}><PackagePlus size={16} /> Gerenciar</button><button onClick={() => go("licenses")}><KeyRound size={16} /> Chaves</button></div>}<aside className="admin-sidebar"><div className="admin-logo"><AppLogo /><span className="admin-badge">ADMIN</span></div><div className="admin-nav"><span className="sidebar-section-label">CONTROLE</span><button className={view === "overview" ? "active" : ""} onClick={() => go("overview")}><LayoutDashboard size={18} /> Config</button><button className={view === "licenses" ? "active" : ""} onClick={() => go("licenses")}><KeyRound size={18} /> Chaves</button></div><div className="admin-sidebar-footer"><div className="admin-identity"><div className="admin-avatar"><Crown size={16} /></div><div><b>R7XIR</b><span>Administrador</span></div></div><button className="sidebar-logout" onClick={onLogout}><LogOut size={16} /> Sair</button></div></aside><main className="admin-main"><header className="admin-topbar"><div className="admin-mobile-logo"><AppLogo compact /></div><div><span className="topbar-kicker">CONTROL CENTER</span><h2>Olá, R7XIR <Crown size={18} /></h2></div><div className="admin-top-actions"><span className="admin-online"><span className="online-dot" /> SISTEMA ONLINE</span><button className="icon-button" onClick={() => toast.info("Painel atualizado")}><RefreshCw size={17} /></button><button className="admin-mobile-exit" onClick={onLogout}><LogOut size={16} /></button></div></header>{children}</main></div>;
 }
 
 function AdminOverview({ onGoLicenses }: { onGoLicenses: () => void }) {

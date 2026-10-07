@@ -8,7 +8,7 @@ type MockKey = {
   history?: Array<Record<string, any>>; onlineAt?: number;
 };
 
-const MOCKAPI_KEYS_URL = process.env.MOCKAPI_KEYS_URL?.trim() || "https://6ac2d1c03f4ae78f69453b4b.mockapi.io/scarkeys";
+const MOCKAPI_KEYS_URL = process.env.MOCKAPI_KEYS_URL?.trim() || "https://6ac66d7ebea0e72cf5c906ed.mockapi.io/users";
 const ADMIN_KEY = process.env.RBXIS_ADMIN_KEY?.trim() || "";
 const SESSION_COOKIE = "rbxis_session_v3";
 const secret = () => process.env.RBXIS_SESSION_SECRET || "";
@@ -16,7 +16,7 @@ const encode = (value: string) => Buffer.from(value).toString("base64url");
 const sign = (payload: string) => createHmac("sha256", secret()).update(payload).digest("base64url");
 
 function tokenForAdmin() {
-  const payload = encode(JSON.stringify({ role: "admin", username: "AUXÍLIO DO RD", expiresAt: Date.now() + 2_592_000_000 }));
+  const payload = encode(JSON.stringify({ role: "admin", username: "R7XIR", expiresAt: Date.now() + 2_592_000_000 }));
   return `${payload}.${sign(payload)}`;
 }
 
@@ -196,7 +196,7 @@ export default async function trpc(req: any, res: any) {
       }
       const sessionToken = tokenForAdmin();
       res.setHeader("Set-Cookie", `rbxis_session_v3=${sessionToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`);
-      return ok(res, { success: true, username: "AUXÍLIO DO RD", sessionToken });
+      return ok(res, { success: true, username: "R7XIR", sessionToken });
     }
     if (path === "auth.login") {
       if (!secret()) return fail(res, 503, "RBXIS_SESSION_SECRET não configurado");
@@ -222,7 +222,7 @@ export default async function trpc(req: any, res: any) {
     if (path === "auth.me") {
       const session = readSession(req);
       if (!session) return ok(res, null);
-      if (session.role === "admin") return ok(res, { role: "admin", username: ADMIN_KEY, name: ADMIN_KEY, email: null });
+      if (session.role === "admin") return ok(res, { role: "admin", username: "R7XIR", name: "R7XIR", email: null });
       const key = (await listAllMockKeys()).map(normalize).find((item) => item.key === session.accessKey);
       if (!key || key.status === "revoked" || key.status === "blocked" || (key.expiresAt && key.expiresAt <= Math.floor(Date.now() / 1000))) return ok(res, null);
       return ok(res, { role: "user", username: key.key, name: key.key, email: null, planId: key.type ?? "daily", expiresAt: key.expiresAt ? new Date(key.expiresAt * 1000) : new Date("2099-12-31T23:59:59Z"), deviceId: key.device || null });
@@ -269,7 +269,7 @@ export default async function trpc(req: any, res: any) {
       const type = planId === "hourly" ? "hourly" : planId === "weekly" ? "weekly" : planId === "perm" ? "perm" : "daily";
       const permanent = type === "perm";
       const expire = permanent ? 0 : type === "hourly" ? 1 : type === "weekly" ? 7 : 1;
-      const created = await mockRequest<MockKey>("", { method: "POST", body: JSON.stringify({ key: `RD-${type}-${randomBytes(6).toString("hex").toUpperCase()}`, username: String(data.username ?? "").trim(), used: false, device: "", expire, type, createdAt: now, activatedAt: 0, expiresAt: 0, status: "active" }) });
+      const created = await mockRequest<MockKey>("", { method: "POST", body: JSON.stringify({ key: `R7XIR-${type}-${randomBytes(6).toString("hex").toUpperCase()}`, username: String(data.username ?? "").trim(), used: false, device: "", expire, type, createdAt: now, activatedAt: 0, expiresAt: 0, status: "active" }) });
       return ok(res, asLicense(created));
     }
     const id = Number(data.id); const current = match(id);

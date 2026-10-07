@@ -5,6 +5,7 @@ import superjson from "superjson";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./r7xir.css";
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({

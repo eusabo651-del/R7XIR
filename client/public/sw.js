@@ -1,5 +1,5 @@
-const CACHE_NAME = "auxilio-do-rd-shell-v1";
-const APP_SHELL = ["/", "/manifest.json", "/rd-icon-180.png", "/rd-icon-192.png", "/rd-icon-512.png", "/rd-icon-maskable-512.png", "/rd-portrait.jpeg"];
+const CACHE_NAME = "r7xir-shell-v2";
+const APP_SHELL = ["/", "/manifest.json", "/r7xir-icon-180.png", "/r7xir-icon-192.png", "/r7xir-icon-512.png", "/r7xir-icon-maskable-512.png", "/spotify-mark-white.png", "/rd-portrait.jpeg"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));

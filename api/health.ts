@@ -1,5 +1,5 @@
 export default function health(_req: any, res: any) {
-  const payload = { ok: true, service: "auxilio-do-rd" };
+  const payload = { ok: true, service: "r7xir" };
   if (typeof res.status === "function") {
     res.status(200).json(payload);
     return;

@@ -744,7 +744,7 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 .yx-aux-status { color: #a8a9ae; }
 .yx-aux-status i { background: #d92e3d; box-shadow: 0 0 12px #d92e3d99; }
 .yx-aux-window > .yx-aux-tabs { grid-column: 1; grid-row: 1 / span 4; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 17px; width: 84px; height: 100%; padding: 10px 0 0; border-right: 1px solid #303136; border-bottom: 0; overflow: visible; }
-.yx-aux-tabs::before { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 17px; border: 1px solid #55565c; border-radius: 12px; color: #f5f5f6; background: #27282c; content: "RD"; font-size: 11px; font-weight: 900; letter-spacing: -.08em; }
+.yx-aux-tabs::before { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 17px; border: 1px solid #388ee0; border-radius: 12px; color: transparent; background: #1279dc url("/spotify-mark-white.png") center / 68% no-repeat; content: ""; box-shadow: 0 7px 18px #087bff44; }
 .yx-aux-tabs button { display: grid; place-items: center; width: 48px; height: 48px; min-height: 48px; padding: 0; border: 1px solid transparent; border-radius: 13px; color: #77787d; background: transparent; }
 .yx-aux-tabs button span { display: none; }
 .yx-aux-tabs button:hover { color: #f0f0f1; background: #25262a; }
@@ -799,26 +799,8 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
   .yx-aux-window > .aux-footer { margin-top: 14px; font-size: 8px; }
 }
 
-/* UMP do Free Fire usada como marcador visual das funções do Auxílio. */
-.ump-weapon { display: block; flex: 0 0 auto; width: 54px; height: 28px; object-fit: contain; object-position: center; filter: brightness(1.45) contrast(1.18) drop-shadow(0 3px 5px #0009); }
-.aux-toggle-row.yx-aim-row .ump-weapon { width: 54px; height: 28px; }
+/* Ícone Spotify da navegação do Auxílio. */
 .yx-module-grid .aux-module { gap: 12px; }
-.yx-module-grid .aux-module .ump-weapon { width: 50px; height: 27px; }
-@media (max-width: 760px) {
-  .aux-toggle-row.yx-aim-row .ump-weapon { width: 43px; height: 23px; }
-  .yx-module-grid .aux-module .ump-weapon { width: 42px; height: 23px; }
-}
-
-/* Ícone original do trilho; a UMP permanece somente nos controles das funções. */
-.yx-aux-tabs::before { content: "RD"; background: #27282c; }
-.ffh4x-icon { display: block; flex: 0 0 auto; width: 44px; height: 32px; border-radius: 7px; object-fit: cover; object-position: center; filter: contrast(1.08) drop-shadow(0 3px 5px #0009); }
-.aux-toggle-row.yx-aim-row .ffh4x-icon { width: 54px; height: 32px; }
-.yx-module-grid .aux-module .ffh4x-icon { width: 48px; height: 34px; }
-@media (max-width: 760px) {
-  .yx-aux-tabs::before { background-size: 88% 88%; }
-  .aux-toggle-row.yx-aim-row .ffh4x-icon { width: 43px; height: 27px; }
-  .yx-module-grid .aux-module .ffh4x-icon { width: 42px; height: 28px; }
-}
 
 /* Banner de Scarface no cabeçalho da aba Auxílio. */
 .yx-aux-window > .yx-aux-heading { min-height: 146px; }

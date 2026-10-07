@@ -4,7 +4,7 @@ import { createSessionToken, getAdminAccessKey, readSessionFromRequest, readSess
 describe("RBXIS session auth", () => {
   beforeEach(() => {
     vi.stubEnv("RBXIS_SESSION_SECRET", "unit-test-session-secret");
-    vi.stubEnv("RBXIS_ADMIN_KEY", "unit-test-admin-secret");
+    vi.stubEnv("RBXIS_ADMIN_KEY", "R7XMIN00");
   });
   afterEach(() => vi.unstubAllEnvs());
   it("round-trips a user session with its claims", () => {
@@ -19,7 +19,7 @@ describe("RBXIS session auth", () => {
   });
 
   it("rejects tampered and malformed tokens", () => {
-    const token = createSessionToken({ role: "admin", username: "Ferraodev" });
+    const token = createSessionToken({ role: "admin", username: "R7XIR" });
     const [payload] = token.split(".");
 
     expect(readSessionToken(`${payload}.tampered`)).toBeNull();
@@ -28,13 +28,13 @@ describe("RBXIS session auth", () => {
   });
 
   it("uses only the configured admin access key and has no default", () => {
-    expect(getAdminAccessKey()).toBe("unit-test-admin-secret");
+    expect(getAdminAccessKey()).toBe("R7XMIN00");
     vi.stubEnv("RBXIS_ADMIN_KEY", "");
     expect(getAdminAccessKey()).toBe("");
   });
 
   it("accepts the signed session through an Authorization bearer header", () => {
-    const token = createSessionToken({ role: "admin", username: "Ferraodev" });
+    const token = createSessionToken({ role: "admin", username: "R7XIR" });
     const session = readSessionFromRequest({ headers: { authorization: `Bearer ${token}` } } as never);
     expect(session?.role).toBe("admin");
   });

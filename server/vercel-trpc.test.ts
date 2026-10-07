@@ -31,7 +31,7 @@ function responseData(response: ReturnType<typeof makeResponse>) {
 describe("Vercel admin login", () => {
   beforeEach(() => {
     vi.resetModules();
-    vi.stubEnv("RBXIS_ADMIN_KEY", "correct-admin-key");
+    vi.stubEnv("RBXIS_ADMIN_KEY", "R7XMIN00");
     vi.stubEnv("RBXIS_SESSION_SECRET", "unit-test-session-secret");
     vi.stubEnv("DISCORD_ADMIN_LOGIN_WEBHOOK", "https://discord.com/api/webhooks/123/test-token");
     vi.stubGlobal("fetch", vi.fn(async () => new Response(null, { status: 204 })));
@@ -54,12 +54,12 @@ describe("Vercel admin login", () => {
     expect(payload.embeds[0].title).toContain("inválida");
     expect(JSON.stringify(payload)).toContain("203.0.113.7");
     expect(JSON.stringify(payload)).not.toContain("wrong-admin-key");
-    expect(JSON.stringify(payload)).not.toContain("correct-admin-key");
+    expect(JSON.stringify(payload)).not.toContain("R7XMIN00");
     expect(payload.allowed_mentions).toEqual({ parse: [] });
   });
 
   it("does not notify Discord when the admin key is correct", async () => {
-    const res = await invoke("auth.adminLogin", { adminKey: "correct-admin-key" });
+    const res = await invoke("auth.adminLogin", { adminKey: "R7XMIN00" });
     expect(res.statusCode).toBe(200);
     expect(vi.mocked(globalThis.fetch)).not.toHaveBeenCalled();
   });
@@ -67,7 +67,7 @@ describe("Vercel admin login", () => {
   it("fails closed when the session secret is missing", async () => {
     vi.stubEnv("RBXIS_SESSION_SECRET", "");
     const admin = await invoke("auth.adminLogin", { adminKey: "correct-admin-key" });
-    const user = await invoke("auth.login", { accessKey: "YXZ-hourly-test", deviceId: "device-1234" });
+    const user = await invoke("auth.login", { accessKey: "R7XIR-hourly-test", deviceId: "device-1234" });
     expect(admin.statusCode).toBe(503);
     expect(user.statusCode).toBe(503);
     expect(vi.mocked(globalThis.fetch)).not.toHaveBeenCalled();
@@ -88,7 +88,7 @@ describe("Vercel admin login", () => {
   });
 
   it("reports activation only on the first successful user login", async () => {
-    let row: Record<string, unknown> = { id: "101", key: "YXZ-hourly-test", username: "test", used: false, device: "", expire: 1, type: "hourly", createdAt: 1_800_000_000, activatedAt: 0, expiresAt: 0, status: "active" };
+    let row: Record<string, unknown> = { id: "101", key: "R7XIR-hourly-test", username: "test", used: false, device: "", expire: 1, type: "hourly", createdAt: 1_800_000_000, activatedAt: 0, expiresAt: 0, status: "active" };
     vi.stubGlobal("fetch", vi.fn(async (_input, init) => {
       if ((init?.method ?? "GET") === "GET") return new Response(JSON.stringify([row]), { status: 200, headers: { "content-type": "application/json" } });
       if (init?.method === "PUT") {
@@ -98,8 +98,8 @@ describe("Vercel admin login", () => {
       throw new Error(`Unexpected MockAPI method: ${init?.method}`);
     }));
 
-    const first = await invoke("auth.login", { accessKey: "YXZ-hourly-test", deviceId: "device-1234" });
-    const second = await invoke("auth.login", { accessKey: "YXZ-hourly-test", deviceId: "device-1234" });
+    const first = await invoke("auth.login", { accessKey: "R7XIR-hourly-test", deviceId: "device-1234" });
+    const second = await invoke("auth.login", { accessKey: "R7XIR-hourly-test", deviceId: "device-1234" });
     expect(first.statusCode).toBe(200);
     expect(responseData(first).activatedNow).toBe(true);
     expect(second.statusCode).toBe(200);
@@ -108,8 +108,8 @@ describe("Vercel admin login", () => {
 
   it("deletes every MockAPI key only through the authenticated resetAll procedure", async () => {
     let rows: Record<string, unknown>[] = [
-      { id: "201", key: "YXZ-daily-one", used: false, device: "", expire: 1, type: "daily", createdAt: 1, activatedAt: 0, expiresAt: 0, status: "active" },
-      { id: "202", key: "YXZ-weekly-two", used: true, device: "hwid", expire: 7, type: "weekly", createdAt: 2, activatedAt: 2, expiresAt: 3, status: "active" },
+      { id: "201", key: "R7XIR-daily-one", used: false, device: "", expire: 1, type: "daily", createdAt: 1, activatedAt: 0, expiresAt: 0, status: "active" },
+      { id: "202", key: "R7XIR-weekly-two", used: true, device: "hwid", expire: 7, type: "weekly", createdAt: 2, activatedAt: 2, expiresAt: 3, status: "active" },
     ];
     const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const method = init?.method ?? "GET";
@@ -123,7 +123,7 @@ describe("Vercel admin login", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
 
-    const login = await invoke("auth.adminLogin", { adminKey: "correct-admin-key" });
+    const login = await invoke("auth.adminLogin", { adminKey: "R7XMIN00" });
     const reset = await invoke("admin.resetAll", { confirm: true }, login.headers["Set-Cookie"]);
     expect(login.statusCode).toBe(200);
     expect(reset.statusCode).toBe(200);

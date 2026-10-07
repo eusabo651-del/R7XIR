@@ -62,7 +62,7 @@ export const appRouter = router({
     me: publicProcedure.query(async ({ ctx }) => {
       const session = ctx.rbxisSession;
       if (!session) return null;
-      if (session.role === "admin") return { role: "admin" as const, username: "AUXÍLIO DO RD", name: "AUXÍLIO DO RD", email: null };
+      if (session.role === "admin") return { role: "admin" as const, username: "R7XIR", name: "R7XIR", email: null };
       if (!session.userId || !session.licenseId) return null;
       const row = await getActiveLicenseSession(session.userId, session.licenseId);
       if (!row) return null;
@@ -99,8 +99,8 @@ export const appRouter = router({
         if (!hasSessionSecret()) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "RBXIS_SESSION_SECRET não configurado" });
         if (!getAdminAccessKey()) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "RBXIS_ADMIN_KEY não configurado" });
         if (normalizeAdminKey(input.adminKey) !== normalizeAdminKey(getAdminAccessKey())) throw new TRPCError({ code: "UNAUTHORIZED", message: "Chave de administrador inválida" });
-        const sessionToken = setSessionCookie(ctx.req, ctx.res, { role: "admin", username: "AUXÍLIO DO RD" });
-        return { success: true as const, username: "AUXÍLIO DO RD", sessionToken };
+        const sessionToken = setSessionCookie(ctx.req, ctx.res, { role: "admin", username: "R7XIR" });
+        return { success: true as const, username: "R7XIR", sessionToken };
       }),
     logout: publicProcedure.mutation(({ ctx }) => {
       clearSessionCookie(ctx.req, ctx.res);

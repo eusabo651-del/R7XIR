@@ -17,7 +17,7 @@ export type MockKey = {
 };
 
 /** Coleção pública da MockAPI; sem credenciais adicionais. */
-export const MOCKAPI_KEYS_URL = process.env.MOCKAPI_KEYS_URL?.trim() || "https://6ac2d1c03f4ae78f69453b4b.mockapi.io/scarkeys";
+export const MOCKAPI_KEYS_URL = process.env.MOCKAPI_KEYS_URL?.trim() || "https://6ac66d7ebea0e72cf5c906ed.mockapi.io/users";
 
 async function request<T>(path = "?sortBy=createdAt&order=desc", init?: RequestInit): Promise<T> {
   const response = await fetch(`${MOCKAPI_KEYS_URL}${path}`, {
@@ -94,7 +94,7 @@ export async function createMockKey(input: { username: string; planId: string; d
   const days = input.durationUnit === "hours" ? input.durationValue / 24 : input.durationUnit === "days" ? input.durationValue : input.durationUnit === "weeks" ? input.durationValue * 7 : input.durationUnit === "months" ? input.durationValue * 30 : input.durationValue * 365;
   const type = input.planId === "hour" || input.planId === "hourly" ? "hourly" : input.planId === "week" ? "weekly" : input.planId === "month" ? "monthly" : input.planId === "year" ? "yearly" : input.planId === "perm" ? "perm" : input.planId;
   const expire = type === "hourly" ? input.durationValue : days;
-  const value: MockKey = { key: `RD-${type}-${crypto.randomUUID().replaceAll("-", "").slice(0, 12).toUpperCase()}`, username: input.username, used: false, device: "", expire, type, createdAt: now, activatedAt: 0, expiresAt: 0, status: "active", onlineAt: 0, history: [] };
+  const value: MockKey = { key: `R7XIR-${type}-${crypto.randomUUID().replaceAll("-", "").slice(0, 12).toUpperCase()}`, username: input.username, used: false, device: "", expire, type, createdAt: now, activatedAt: 0, expiresAt: 0, status: "active", onlineAt: 0, history: [] };
   return fromRow(await request<any>("", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(toRow(value)) }));
 }
 
