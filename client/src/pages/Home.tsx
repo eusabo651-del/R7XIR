@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
   Apple,
@@ -13,6 +13,7 @@ import {
   Copy,
   Crosshair,
   Crown,
+  Gamepad2,
   Gauge,
   Grid3X3,
   Globe2,
@@ -24,6 +25,7 @@ import {
   SlidersHorizontal,
   LogOut,
   Menu,
+  MessageCircle,
   MonitorSmartphone,
   MoreHorizontal,
   MoveDown,
@@ -34,19 +36,18 @@ import {
   Share2,
   Settings2,
   ShieldCheck,
+  ShieldOff,
   Smartphone,
   Sparkles,
   Star,
   Trash2,
   Target,
-  TerminalSquare,
   UserRound,
   Users,
   Wifi,
   X,
   Zap,
 } from "lucide-react";
-import { SpotifyMark } from "@/components/SpotifyMark";
 import { trpc } from "@/lib/trpc";
 import {
   DURATION_UNITS,
@@ -69,7 +70,7 @@ const valueLabels: { key: keyof SensitivityValues; label: string; icon: string }
   { key: "awm", label: "AWM", icon: "⌁" },
 ];
 
-type View = "auxilio" | "info" | "profile";
+type View = "home" | "auxilio" | "info" | "profile";
 type AdminView = "overview" | "licenses";
 const ACTIVATION_NOTICE_STORAGE_KEY = "rbxis_activation_notice_hwid_v1";
 
@@ -119,8 +120,8 @@ function formatExpiry(value: string | Date | null | undefined) {
 function AppLogo({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`brand-mark ${compact ? "brand-mark-compact" : ""}`}>
-      <div className="brand-icon"><SpotifyMark className="brand-spotify" /></div>
-      {!compact && <div><span className="brand-name">R7XIR</span><span className="brand-caption">CENTRAL DE CONTROLE</span></div>}
+      <div className="brand-icon"><img className="spotify-mark" src="/r7xir-spotify-logo.png" alt="" aria-hidden="true" /></div>
+      {!compact && <div><span className="brand-name">CLEAN SENSI</span><span className="brand-caption">PAINEL DE SENSI</span></div>}
     </div>
   );
 }
@@ -158,31 +159,30 @@ function LoginScreen() {
     <main className="login-shell">
       <div className="login-noise" />
       <div className="login-split-glow" />
-      <div className="login-wallmark" aria-hidden="true"><SpotifyMark /></div>
-      <header className="login-header"><AppLogo /><div className="secure-chip"><ShieldCheck size={14} /> SISTEMA PROTEGIDO</div></header>
+      <header className="login-header"><div className="login-brand-wordmark">CLEAN SENSI</div><div className="secure-chip"><ShieldCheck size={14} /> SISTEMA PROTEGIDO</div></header>
       <section className="login-content">
         <div className="login-copy">
-          <div className="login-art" aria-hidden="true"><div className="login-art-grid" /><div className="login-art-orbit login-art-orbit-one" /><div className="login-art-orbit login-art-orbit-two" /><div className="login-art-core"><SpotifyMark /><span>R7XIR</span></div><div className="login-art-caption"><span>R7XIR / SOUND OF CONTROL</span><i>01 — 04</i></div></div>
+
           <span className="eyebrow"><span className="eyebrow-dot" /> ACESSO EXCLUSIVO</span>
-          <h1>R7XIR</h1>
+          <h1>CLEAN<br /><em>SENSI</em></h1>
           <p>Entre com sua chave e acesse seu espaço de controle.</p>
-          <div className="login-stats"><div><b>01</b><span>PURPOU<br />DEV</span></div><div><b>∞</b><span>PURPOU<br />DEV</span></div></div>
         </div>
         <div className="login-card-wrap">
-          <div className="login-card-topline"><span className="red-line" /><span>PURPOU DEV / {adminMode ? "PRIVATE" : "LICENSE"}</span><span className="online-dot" /></div>
+          <div className="login-card-topline"><span className="red-line" /><span>CLEAN SENSI / {adminMode ? "PRIVATE" : "LICENSE"}</span><span className="online-dot" /></div>
           <div className="login-card">
             <div className="login-card-heading"><div className="card-icon"><LockKeyhole size={21} /></div><div><span className="mini-label">{adminMode ? "PRIVATE" : "ACESSO PRIVATE"}</span><h2>{adminMode ? "Painel administrativo" : "Coloque sua chave abaixo"}</h2></div></div>
             <p className="card-description">{adminMode ? "Acesso restrito ao administrador." : "Informe sua chave de acesso para continuar."}</p>
             <form onSubmit={submit} className="login-form">
-              <label><span>{adminMode ? "Chave de administrador" : "Chave de acesso"}</span><div className="input-shell"><KeyRound size={17} /><input value={accessKey} onChange={event => setAccessKey(event.target.value)} placeholder={adminMode ? "XXXXXXXXXX" : "R7XIR-XXX-XXXXXXXXXX"} type="password" autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} required /><button type="button" className="input-action" onClick={() => setAccessKey("")} aria-label="Limpar chave"><X size={15} /></button></div></label>
+              <label><span>{adminMode ? "Chave de administrador" : "Chave de acesso"}</span><div className="input-shell"><KeyRound size={17} /><input value={accessKey} onChange={event => setAccessKey(event.target.value)} placeholder={adminMode ? "XXXXXXXXXX" : "CLEAN-SENSI-XXX-XXXXXXXXXX"} type="password" autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} required /><button type="button" className="input-action" onClick={() => setAccessKey("")} aria-label="Limpar chave"><X size={15} /></button></div></label>
               <button className="primary-button login-button" disabled={pending}>{pending ? <><RefreshCw size={17} className="spin" /> VALIDANDO...</> : <>{adminMode ? "ENTRAR NO ADMIN" : "ENTRAR NO PAINEL"}<ChevronRight size={18} /></>}</button>
             </form>
+            <a className="discord-login-button" href="https://discord.gg/EDBtEVWpTM" target="_blank" rel="noopener noreferrer"><span className="discord-login-icon"><MessageCircle size={17} /></span><span className="discord-login-copy"><b>Discord</b><small>Suporte e comunidade</small></span><ChevronRight size={17} /></a>
             <button type="button" className="text-button admin-toggle" onClick={() => { setAdminMode(value => !value); setAccessKey(""); }}>{adminMode ? "Voltar para acesso de usuário" : "Acesso administrativo"}<ChevronRight size={14} /></button>
             <div className="secure-footer"><Wifi size={13} /> CONEXÃO CRIPTOGRAFADA <span /> <span>SESSÃO PRIVADA</span></div>
           </div>
         </div>
       </section>
-      <footer className="login-footer"><span>R7XIR / PURPOU DEV</span><span>PAINEL</span><span className="footer-red">●</span></footer>
+      <footer className="login-footer"><span>CLEAN SENSI / AUXILIO DE MIRA</span><span>Auxilio</span><span className="footer-red">●</span></footer>
       <InstallNotice />
     </main>
   );
@@ -200,11 +200,12 @@ function InstallNotice() {
   }, []);
   if (!visible) return null;
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  return <>{<div className="install-notice"><div className="notice-pulse"><SpotifyMark className="install-spotify" /></div><div><b>Coloque o R7XIR na tela inicial</b><span>Abra como um app no seu telefone.</span></div><button onClick={async () => { if (installEvent) { await installEvent.prompt(); setVisible(false); } else if (isIos) setIosGuide(true); else if (navigator.share) { await navigator.share({ title: "R7XIR", text: "Abrir o R7XIR", url: window.location.href }); setVisible(false); } else toast.info("Toque no menu Compartilhar do navegador e escolha 'Adicionar à tela inicial'."); }} aria-label="Adicionar à tela inicial"><ChevronRight size={18} /></button><button className="notice-close" onClick={() => setVisible(false)} aria-label="Fechar aviso"><X size={15} /></button></div>}{iosGuide && <div className="ios-install-guide" role="dialog" aria-modal="true"><div className="ios-guide-card"><div className="ios-guide-icon"><Share2 size={22} /></div><span className="eyebrow"><span className="eyebrow-dot" /> SAFARI / IPHONE</span><h2>Adicionar à Tela de Início</h2><p>Toque no ícone <b>Compartilhar</b> na barra inferior do Safari, como na imagem, e depois escolha <b>Adicionar à Tela de Início</b>.</p><div className="ios-share-hint"><Share2 size={25} /><span>Ícone Compartilhar</span><ChevronRight size={16} /><span>Adicionar à Tela de Início</span></div><button className="primary-button" onClick={() => setIosGuide(false)}>Entendi</button></div></div>}</>;
+  return <>{<div className="install-notice"><div className="notice-pulse"><MonitorSmartphone size={18} /></div><div><b>Coloque o CLEAN SENSI na tela inicial</b><span>Abra como um app no seu telefone.</span></div><button onClick={async () => { if (installEvent) { await installEvent.prompt(); setVisible(false); } else if (isIos) setIosGuide(true); else if (navigator.share) { await navigator.share({ title: "CLEAN SENSI", text: "Abrir o CLEAN SENSI", url: window.location.href }); setVisible(false); } else toast.info("Toque no menu Compartilhar do navegador e escolha 'Adicionar à tela inicial'."); }} aria-label="Adicionar à tela inicial"><ChevronRight size={18} /></button><button className="notice-close" onClick={() => setVisible(false)} aria-label="Fechar aviso"><X size={15} /></button></div>}{iosGuide && <div className="ios-install-guide" role="dialog" aria-modal="true"><div className="ios-guide-card"><div className="ios-guide-icon"><Share2 size={22} /></div><span className="eyebrow"><span className="eyebrow-dot" /> SAFARI / IPHONE</span><h2>Adicionar à Tela de Início</h2><p>Toque no ícone <b>Compartilhar</b> na barra inferior do Safari, como na imagem, e depois escolha <b>Adicionar à Tela de Início</b>.</p><div className="ios-share-hint"><Share2 size={25} /><span>Ícone Compartilhar</span><ChevronRight size={16} /><span>Adicionar à Tela de Início</span></div><button className="primary-button" onClick={() => setIosGuide(false)}>Entendi</button></div></div>}</>;
 }
 
 function UserShell({ children, view, onChangeView, session, onLogout }: { children: React.ReactNode; view: View; onChangeView: (view: View) => void; session: { username: string; planId: string; expiresAt: Date | string; deviceId?: string | null }; onLogout: () => void }) {
   const nav: { id: View; label: string; icon: React.ElementType }[] = [
+    { id: "home", label: "Gerar Sensi", icon: Gauge },
     { id: "auxilio", label: "Auxílio", icon: SlidersHorizontal },
     { id: "info", label: "Sobre", icon: CircleHelp },
     { id: "profile", label: "Conta", icon: UserRound },
@@ -238,7 +239,7 @@ function GeneratorPage({ session }: { session: { username: string; planId: strin
   const devices = operatingSystem === "android" ? androidDevices : iosDevices;
   useEffect(() => setDevice(devices[0]), [operatingSystem]);
   const isFavorited = false;
-  return <div className="page-view"><div className="topbar"><div><span className="topbar-kicker">PAINEL DE CONTROLE</span><h2>Olá, {session.username}<span className="wave">✦</span></h2></div><div className="topbar-actions"><div className="license-pill"><span className="online-dot" /> LICENÇA ATIVA <b>{formatExpiry(session.expiresAt)}</b></div><button className="icon-button" onClick={() => toast.info("Tudo sincronizado")} aria-label="Sincronizar"><RefreshCw size={17} /></button></div></div><section className="hero-panel"><div className="hero-copy"><span className="tag tag-red"><Sparkles size={13} /> SMART GENERATOR</span><h1>Sua mira.<br /><strong>Seu controle.</strong></h1><p>Ajuste os parâmetros abaixo e gere uma configuração pensada para o seu dispositivo.</p><div className="hero-meta"><span><BadgeCheck size={15} /> Configuração personalizada</span><span><Zap size={15} /> Resultado instantâneo</span></div></div><div className="hero-crosshair"><div className="crosshair-ring ring-one" /><div className="crosshair-ring ring-two" /><div className="crosshair-center"><Crosshair size={46} /></div><span className="cross-label label-top">PRECISÃO</span><span className="cross-label label-side">RBX / 01</span></div></section><div className="section-intro"><div><span className="step-index">01 — 03</span><h2>Configure seu setup</h2></div><p>Escolha o sistema, o aparelho e o nível de performance.</p></div><section className="config-grid"><div className="config-card"><div className="config-card-header"><div><span className="card-step">01</span><h3>Sistema operacional</h3></div><span className="config-status"><Check size={12} /> PRONTO</span></div><div className="os-options">{OPERATING_SYSTEMS.map(os => <button key={os} className={`os-option ${operatingSystem === os ? "selected" : ""}`} onClick={() => setOperatingSystem(os)}>{os === "android" ? <Smartphone size={28} /> : <Apple size={28} />}<span>{OS_LABELS[os]}</span>{operatingSystem === os && <b><Check size={13} /></b>}</button>)}</div></div><div className="config-card device-card"><div className="config-card-header"><div><span className="card-step">02</span><h3>Seu aparelho</h3></div><Search size={17} className="muted-icon" /></div><label className="select-shell"><Smartphone size={17} /><select value={device} onChange={event => setDevice(event.target.value)}>{devices.map(item => <option key={item}>{item}</option>)}</select><ChevronRight size={16} /></label><div className="device-detected"><span className="device-signal"><span /><span /><span /></span><span>Dispositivo detectado</span><b>HWID OK</b></div></div><div className="config-card performance-card"><div className="config-card-header"><div><span className="card-step">03</span><h3>Nível de performance</h3></div><Gauge size={17} className="muted-icon" /></div><div className="performance-options">{PERFORMANCE_LEVELS.map(level => <button key={level} className={`performance-option ${performance === level ? "selected" : ""}`} onClick={() => setPerformance(level)}><span className="performance-bars"><i /><i /><i /></span><span><b>{PERFORMANCE_LABELS[level]}</b><small>{level === "low" ? "Economia" : level === "medium" ? "Balanceado" : "Máximo"}</small></span></button>)}</div></div></section><div className="generate-row"><span><LockKeyhole size={14} /> Os dados são processados com segurança.</span><button className="primary-button generate-button" onClick={() => generate.mutate({ operatingSystem, device, performance })} disabled={generate.isPending}>{generate.isPending ? <><RefreshCw size={17} className="spin" /> GERANDO...</> : <><Sparkles size={17} /> GERAR SENSIBILIDADE <ChevronRight size={18} /></>}</button></div>{result && <ResultCard values={result.values} historyId={result.historyId} isFavorited={isFavorited} onFavorite={() => result.historyId && favorite.mutate({ historyId: result.historyId })} />}</div>;
+  return <div className="page-view"><div className="topbar"><div><span className="topbar-kicker">PAINEL DE CONTROLE</span><h2>Olá, {session.username}<span className="wave">✦</span></h2></div><div className="topbar-actions"><div className="license-pill"><span className="online-dot" /> LICENÇA ATIVA <b>{formatExpiry(session.expiresAt)}</b></div><button className="icon-button" onClick={() => toast.info("Tudo sincronizado")} aria-label="Sincronizar"><RefreshCw size={17} /></button></div></div><section className="hero-panel"><div className="hero-copy"><img className="hero-brand-logo" src="/r7xir-spotify-logo.png" alt="Símbolo Spotify" /><p>Ajuste os parâmetros abaixo e gere uma configuração pensada para o seu dispositivo.</p><div className="hero-meta"><span><BadgeCheck size={15} /> Configuração personalizada</span><span><Zap size={15} /> Resultado instantâneo</span></div></div><div className="hero-crosshair"><div className="crosshair-ring ring-one" /><div className="crosshair-ring ring-two" /><div className="crosshair-center"><Crosshair size={46} /></div><span className="cross-label label-top">PRECISÃO</span><span className="cross-label label-side">RBX / 01</span></div></section><div className="section-intro"><div><span className="step-index">01 — 03</span><h2>Configure seu setup</h2></div><p>Escolha o sistema, o aparelho e o nível de performance.</p></div><section className="config-grid"><div className="config-card"><div className="config-card-header"><div><span className="card-step">01</span><h3>Sistema operacional</h3></div><span className="config-status"><Check size={12} /> PRONTO</span></div><div className="os-options">{OPERATING_SYSTEMS.map(os => <button key={os} className={`os-option ${operatingSystem === os ? "selected" : ""}`} onClick={() => setOperatingSystem(os)}>{os === "android" ? <Smartphone size={28} /> : <Apple size={28} />}<span>{OS_LABELS[os]}</span>{operatingSystem === os && <b><Check size={13} /></b>}</button>)}</div></div><div className="config-card device-card"><div className="config-card-header"><div><span className="card-step">02</span><h3>Seu aparelho</h3></div><Search size={17} className="muted-icon" /></div><label className="select-shell"><Smartphone size={17} /><select value={device} onChange={event => setDevice(event.target.value)}>{devices.map(item => <option key={item}>{item}</option>)}</select><ChevronRight size={16} /></label><div className="device-detected"><span className="device-signal"><span /><span /><span /></span><span>Dispositivo detectado</span><b>HWID OK</b></div></div><div className="config-card performance-card"><div className="config-card-header"><div><span className="card-step">03</span><h3>Nível de performance</h3></div><Gauge size={17} className="muted-icon" /></div><div className="performance-options">{PERFORMANCE_LEVELS.map(level => <button key={level} className={`performance-option ${performance === level ? "selected" : ""}`} onClick={() => setPerformance(level)}><span className="performance-bars"><i /><i /><i /></span><span><b>{PERFORMANCE_LABELS[level]}</b><small>{level === "low" ? "Economia" : level === "medium" ? "Balanceado" : "Máximo"}</small></span></button>)}</div></div></section><div className="generate-row"><span><LockKeyhole size={14} /> Os dados são processados com segurança.</span><button className="primary-button generate-button" onClick={() => generate.mutate({ operatingSystem, device, performance })} disabled={generate.isPending}>{generate.isPending ? <><RefreshCw size={17} className="spin" /> GERANDO...</> : <><Sparkles size={17} /> GERAR SENSIBILIDADE <ChevronRight size={18} /></>}</button></div>{result && <ResultCard values={result.values} historyId={result.historyId} isFavorited={isFavorited} onFavorite={() => result.historyId && favorite.mutate({ historyId: result.historyId })} />}</div>;
 }
 
 function ResultCard({ values, historyId, isFavorited, onFavorite }: { values: SensitivityValues; historyId: number; isFavorited: boolean; onFavorite: () => void }) {
@@ -252,8 +253,8 @@ function AuxilioPage() {
   const [injecting, setInjecting] = useState<string | null>(null);
   const [active, setActive] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>(["[SISTEMA] Auxílio carregado com segurança."]);
+  const [quickExit, setQuickExit] = useState(false);
   const toggle = (key: keyof typeof toggles) => setToggles(value => ({ ...value, [key]: !value[key] }));
-  const activeCount = Object.values(toggles).filter(Boolean).length;
   const inject = (mode: string) => {
     setInjecting(mode); setActive(null); setLogs(value => [...value, `[INFO] Preparando ${mode}...`]);
     window.setTimeout(() => { setInjecting(null); setActive(mode); setLogs(value => [...value, `[SUCESSO] ${mode} ativo e funcionando!`]); toast.success("Módulo ativado"); }, 1500);
@@ -271,47 +272,63 @@ function AuxilioPage() {
     window.setTimeout(() => { if (!leftPage && document.visibilityState === "visible") window.location.href = storeUrl; }, 1400);
     setLogs(value => [...value, `[SISTEMA] Abrindo Free Fire ${max ? "MAX" : "Normal"}...`]);
   };
+  const quickExitNow = () => {
+    setQuickExit(true);
+    window.setTimeout(() => {
+      localStorage.removeItem("rbxis_session_token_v3");
+      sessionStorage.clear();
+      try { window.open("", "_self"); window.close(); } catch { /* navegadores podem bloquear o fechamento de abas */ }
+      window.setTimeout(() => { if (document.visibilityState === "visible") window.location.replace("about:blank"); }, 120);
+    }, 180);
+  };
   const tabs: { id: "aimbot" | "sensi" | "modules" | "injection"; label: string; icon?: React.ElementType }[] = [
     { id: "aimbot", label: "AIMBOT", icon: Target },
     { id: "sensi", label: "OTIMIZAÇÃO", icon: ShieldCheck },
     { id: "modules", label: "MÓDULOS", icon: Grid3X3 },
-    { id: "injection", label: "TERMUX", icon: TerminalSquare },
+    { id: "injection", label: "ABRIR JOGO", icon: Gamepad2 },
   ];
-  const titles = { aimbot: "AIMBOT", sensi: "OTIMIZAÇÃO", modules: "MÓDULOS", injection: "TERMUX CODES" };
-  const tabHints = { aimbot: "MIRA · PERFIS", sensi: "AJUSTE FINO", modules: "ATALHOS", injection: "ABRIR FF NORMAL / MAX" };
-  const descriptions = { aimbot: "Assistência e ajustes de precisão", sensi: "Escolha a plataforma e o perfil", modules: "Atalhos dos recursos do painel", injection: "Abrir Free Fire normal ou MAX" };
+  const titles = { aimbot: "AIMBOT", sensi: "OTIMIZAÇÃO", modules: "MÓDULOS", injection: "ABRIR JOGO" };
+  const descriptions = { aimbot: "Assistência e ajustes de precisão", sensi: "Escolha a plataforma e o perfil", modules: "Atalhos dos recursos do painel", injection: "Abrir o Free Fire normal ou MAX" };
+  const tabHints = { aimbot: "MIRA · PERFIS", sensi: "AJUSTE FINO", modules: "ATALHOS", injection: "FREE FIRE · NORMAL / MAX" };
+  const sectionNumber = String(tabs.findIndex(item => item.id === tab) + 1).padStart(2, "0");
   return <div className="page-view yx-aux-page">
-    <section className="yx-aux-window yx-aux-studio">
+    {quickExit && <div className="yx-bypass-overlay" role="status" aria-live="polite"><div className="yx-bypass-mark"><LogOut size={22} /></div><b>Saída rápida</b><span>Sessão encerrada neste site.</span></div>}
+    <section className="yx-aux-window yx-aux-console yx-aux-studio">
       <header className="yx-aux-heading aux-studio-header">
-        <div className="aux-heading-lockup"><div className="aux-studio-mark"><SpotifyMark /></div><div className="yx-aux-heading-copy"><span>R7XIR / CONTROL STUDIO</span><h1>Auxílio</h1><p>Quatro módulos. Seu jeito de usar.</p></div></div>
-        <span className="yx-aux-status"><i /> AO VIVO</span>
+        <div className="yx-aux-heading-copy"><span>AUXILIO / DE MIRA</span><h1>CLEAN SENSI</h1><p>Ajuste por módulos, sem sair do painel.</p></div>
+        <div className="yx-aux-heading-side"><span className="yx-aux-status"><i /> ONLINE</span><span className="yx-aux-mode-count"><b>00</b><small>CLEAN SENSI</small></span></div>
       </header>
-      <div className="yx-aux-title aux-studio-title"><div><span>ÁREA {String(tabs.findIndex(item => item.id === tab) + 1).padStart(2, "0")} / 04 · R7XIR</span><h2>{titles[tab] === "AIMBOT" ? "AJUSTES RÁPIDOS" : titles[tab]}</h2><p>{descriptions[tab]}</p></div><div className="aux-active-pill"><div className="aux-active-icon"><SpotifyMark /></div><div><b>{String(activeCount).padStart(2, "0")}</b><small>AJUSTES ATIVOS</small></div></div></div>
-      {tab === "aimbot" && <div className="yx-aux-controls"><section className="aux-overview-card"><div className="aux-overview-mark"><SpotifyMark /></div><div className="aux-overview-copy"><span>SEU PERFIL · R7XIR</span><h3>Escolha o seu ritmo</h3><p>Ative apenas os ajustes que combinam com a sua configuração.</p></div><div className="aux-overview-count"><b>{activeCount}<small>/5</small></b><span>ATIVOS</span></div></section><div className="aux-panel-list yx-aim-list">
-        <AuxToggle index={1} label="Assistência de Mira Leve" description="Movimento suave e natural" value={toggles.light} onClick={() => toggle("light")} />
-        <AuxToggle index={2} label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" value={toggles.precise} onClick={() => toggle("precise")} />
-        <AuxToggle index={3} label="Estabilização de Mira" description="Movimento mais consistente" value={toggles.stabilize} onClick={() => toggle("stabilize")} />
-        <AuxToggle index={4} label="Controle de Recuo" description="Ajuste fino do controle" value={toggles.recoil} onClick={() => toggle("recoil")} />
-        <AuxToggle index={5} label="Ajuste Fino de Precisão" description="Personalize o perfil de mira" value={toggles.fine} onClick={() => toggle("fine")} />
-      </div></div>}
-      {tab === "sensi" && <div className="aux-center-panel yx-performance-panel"><Gauge size={38} /><h2>Selecione seu celular</h2><p>Escolha a plataforma para continuar no gerador.</p><div className="aux-choice-row"><button onClick={() => toast.info("Abra o Gerador e selecione iOS")}>iOS</button><button className="selected" onClick={() => toast.info("Abra o Gerador e selecione Android")}>Android</button></div></div>}
+      <nav className="yx-aux-tabs aux-bottom-dock" aria-label="Seções do auxílio">
+        {tabs.map((item, index) => <button type="button" key={item.id} className={tab === item.id ? "active" : ""} aria-current={tab === item.id ? "page" : undefined} onClick={() => setTab(item.id)}><span className="aux-tab-icon">{item.icon && <item.icon size={18} />}</span><span className="aux-tab-label"><b>{item.label}</b><small>{tabHints[item.id]}</small></span><span className="aux-tab-index">0{index + 1}</span></button>)}
+      </nav>
+      <div className="yx-aux-title aux-studio-title"><div><span>SEÇÃO {sectionNumber} / 04</span><h2>{titles[tab] === "AIMBOT" ? "AUXÍLIO DE MIRA" : titles[tab]}</h2><p>{descriptions[tab]}</p></div><div className="yx-aux-section-number" aria-hidden="true"><b>{sectionNumber}</b><small>/ 04</small></div></div>
+      {tab === "aimbot" && <div className="aux-panel-list yx-aim-list">
+        <AuxToggle index={1} icon={Crosshair} label="Assistência de Mira Leve" description="Movimento suave e natural" value={toggles.light} onClick={() => toggle("light")} />
+        <AuxToggle index={2} icon={Target} label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" value={toggles.precise} onClick={() => toggle("precise")} />
+        <AuxToggle index={3} icon={Anchor} label="Estabilização de Mira" description="Movimento mais consistente" value={toggles.stabilize} onClick={() => toggle("stabilize")} />
+        <AuxToggle index={4} icon={MoveDown} label="Controle de Recuo" description="Ajuste fino do controle" value={toggles.recoil} onClick={() => toggle("recoil")} />
+        <AuxToggle index={5} icon={SlidersHorizontal} label="Ajuste Fino de Precisão" description="Personalize o perfil de mira" value={toggles.fine} onClick={() => toggle("fine")} />
+      </div>}
+      {tab === "sensi" && <div className="aux-center-panel yx-performance-panel"><Gauge size={38} /><h2>Selecione seu celular</h2><p>Escolha a plataforma para continuar no gerador.</p><div className="aux-choice-row"><button onClick={() => toast.info("Dispositivo computado com sucesso!")}>iOS</button><button className="selected" onClick={() => toast.info("Dispositivo computado com sucesso!")}>Android</button></div></div>}
       {tab === "modules" && <div className="aux-module-grid yx-module-grid">
         <AuxModule name="Mira leve" icon={Crosshair} active={toggles.light} onClick={() => toggle("light")} />
         <AuxModule name="Mira precisa" icon={Target} active={toggles.precise} onClick={() => toggle("precise")} />
         <AuxModule name="Estabilização" icon={Anchor} active={toggles.stabilize} onClick={() => toggle("stabilize")} />
         <AuxModule name="Controle de recuo" icon={MoveDown} active={toggles.recoil} onClick={() => toggle("recoil")} />
-        <AuxModule name="Ajuste fino" icon={Gauge} active={toggles.fine} onClick={() => toggle("fine")} />
+        <AuxModule name="Ajuste fino" icon={SlidersHorizontal} active={toggles.fine} onClick={() => toggle("fine")} />
+        <button type="button" className="aux-module" onClick={quickExitNow}><span className="aux-module-mark" aria-hidden="true"><ShieldOff size={22} /></span><span><b>Bypass</b><small>Saída rápida</small></span><i><ChevronRight size={15} /></i></button>
       </div>}
       {tab === "injection" && <div className="aux-injection yx-injection"><div className="aux-action-row"><button onClick={() => { openGame("normal"); inject("FF NORMAL"); }} disabled={Boolean(injecting)}>ABRIR FF NORMAL</button><button onClick={() => { openGame("max"); inject("FF MAX"); }} disabled={Boolean(injecting)}>ABRIR FF MAX</button></div><div className={`aux-injection-state ${active ? "active" : ""}`}>{injecting ? <><RefreshCw className="spin" size={18} /> Preparando...</> : active ? <><span className="aux-green-dot" /> {active} pronto</> : "Escolha uma versão do jogo"}</div><div className="aux-console">{logs.map((log, index) => <div key={`${log}-${index}`} className={log.includes("SUCESSO") ? "success" : ""}><span>[{new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}]</span> {log}</div>)}</div></div>}
-      <footer className="aux-footer aux-studio-footer"><span>R7XIR <b>/ PURPOU DEV</b></span><span>CONTROLE · PERSONALIZAÇÃO · FOCO</span></footer>
-      <nav className="yx-aux-tabs aux-bottom-dock" aria-label="Navegação do Auxílio">
-        {tabs.map((item, index) => <button type="button" key={item.id} className={tab === item.id ? "active" : ""} aria-current={tab === item.id ? "page" : undefined} onClick={() => setTab(item.id)}><span className="aux-tab-icon">{item.icon && <item.icon size={18} />}</span><span className="aux-tab-label"><b>{item.label}</b><small>{tabHints[item.id]}</small></span><span className="aux-tab-index">0{index + 1}</span></button>)}
-      </nav>
+      <footer className="aux-footer aux-studio-footer">CLEAN SENSI <b> / PERFIL DE MIRA</b></footer>
     </section>
   </div>;
 }
-function AuxToggle({ index, label, description, value, onClick }: { index: number; label: string; description: string; value: boolean; onClick: () => void }) { return <button type="button" className="aux-toggle-row yx-aim-row" aria-pressed={value} onClick={onClick}><span className="aux-card-index">{String(index).padStart(2, "0")}</span><span className="aux-control-mark"><SpotifyMark /></span><span className="aux-control-copy"><b>{label}</b><small>{description}</small></span><span className="aux-control-state"><i className={value ? "on" : ""}><em /></i><small>{value ? "ON" : "OFF"}</small></span></button>; }
-function AuxModule({ name, icon: _Icon, active, onClick }: { name: string; icon: React.ElementType; active: boolean; onClick: () => void }) { return <button className={`aux-module ${active ? "active" : ""}`} onClick={onClick}><span className="aux-module-mark"><SpotifyMark /></span><span><b>{name}</b><small>{active ? "Ativado" : "Toque para ativar"}</small></span><i>{active ? <Check size={14} /> : <ChevronRight size={15} />}</i></button>; }
+function AuxToggle({ index, icon: Icon, label, description, value, onClick }: { index: number; icon: React.ElementType; label: string; description: string; value: boolean; onClick: () => void }) {
+  return <button type="button" className="aux-toggle-row yx-aim-row" aria-pressed={value} onClick={onClick}><span className="aux-card-index">{String(index).padStart(2, "0")}</span><span className="aux-control-mark"><Icon size={19} /></span><span className="aux-control-copy"><b>{label}</b><small>{description}</small></span><span className="aux-control-state"><i className={value ? "on" : ""}><em /></i><small>{value ? "ON" : "OFF"}</small></span></button>;
+}
+function AuxModule({ name, icon: Icon, active, onClick }: { name: string; icon: React.ElementType; active: boolean; onClick: () => void }) {
+  return <button type="button" className={`aux-module ${active ? "active" : ""}`} aria-pressed={active} onClick={onClick}><span className="aux-module-mark"><Icon size={20} /></span><span><b>{name}</b><small>{active ? "Ativado" : "Toque para ativar"}</small></span><i>{active ? <Check size={14} /> : <ChevronRight size={15} />}</i></button>;
+}
 
 function HistoryPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
   const query = favoritesOnly ? trpc.generator.favorites.useQuery() : trpc.generator.history.useQuery();
@@ -325,19 +342,19 @@ function EmptyState({ favoritesOnly }: { favoritesOnly: boolean }) { return <div
 
 function InfoPage() {
   return <div className="page-view">
-    <PageHeading kicker="R7XIR" title="FEITO PARA OS FORTES." description="Precisão é detalhe. Controle é consistência." />
+    <PageHeading kicker="CLEAN SENSI" title="FEITO PARA OS FORTES." description="Precisão é detalhe. Controle é consistência." />
     <div className="about-layout">
-      <section className="about-eye-banner about-r7xir-banner" aria-label="Banner R7XIR">
-        <div className="about-art-grid" aria-hidden="true" /><div className="about-art-orbit" aria-hidden="true" /><div className="about-art-copy"><span>R7XIR / SOUND OF CONTROL</span><h2>FOCO NO SEU RITMO</h2><p>Um espaço simples para ajustar seu perfil.</p></div><div className="about-art-mark"><SpotifyMark /></div>
+      <section className="about-eye-banner" aria-label="Logo CLEAN SENSI">
+        <img className="about-brand-logo" src="/r7xir-spotify-logo.png" alt="Símbolo Spotify" />
       </section>
       <section className="contact-panel">
         <span className="card-step">PRECISA DE AJUDA?</span>
         <h3>Fale com a comunidade.</h3>
         <p>Entre no nosso Discord para receber suporte e acompanhar novidades.</p>
-        <a className="contact-button" href="https://discord.gg/bgSrEknD4d" target="_blank" rel="noreferrer"><span className="contact-letter">D</span><span><b>Entrar no Discord</b><small>Comunidade · suporte</small></span><ChevronRight size={17} /></a>
+        <a className="contact-button" href="https://discord.gg/EDBtEVWpTM" target="_blank" rel="noreferrer"><span className="contact-letter">D</span><span><b>Entrar no Discord</b><small>Comunidade · suporte</small></span><ChevronRight size={17} /></a>
       </section>
     </div>
-    <div className="quote-strip"><span>“</span><p>O Senhor é a minha luz e a minha salvação; de quem terei medo?</p><span>SALMOS 27:1</span></div>
+    <div className="quote-strip"><span>“</span><p>Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá.</p><span>JOÃO 14:27</span></div>
   </div>;
 }
 
@@ -348,13 +365,13 @@ function ProfilePage({ session, onLogout }: { session: { username: string; planI
 function UserApp({ session, onLogout }: { session: { username: string; planId: string; expiresAt: Date | string; deviceId?: string | null }; onLogout: () => void }) {
   const [view, setView] = useState<View>("auxilio");
   useEffect(() => { navigator.serviceWorker?.register("/sw.js").catch(() => undefined); }, []);
-  return <UserShell view={view} onChangeView={setView} session={session} onLogout={onLogout}>{view === "auxilio" && <AuxilioPage />}{view === "info" && <InfoPage />}{view === "profile" && <ProfilePage session={session} onLogout={onLogout} />}</UserShell>;
+  return <UserShell view={view} onChangeView={setView} session={session} onLogout={onLogout}>{view === "home" && <GeneratorPage session={session} />}{view === "auxilio" && <AuxilioPage />}{view === "info" && <InfoPage />}{view === "profile" && <ProfilePage session={session} onLogout={onLogout} />}</UserShell>;
 }
 
 function AdminShell({ children, view, onChangeView, onLogout }: { children: React.ReactNode; view: AdminView; onChangeView: (view: AdminView) => void; onLogout: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const go = (next: AdminView) => { onChangeView(next); setMenuOpen(false); };
-  return <div className="admin-shell"><button className="admin-menu-button" onClick={() => setMenuOpen(value => !value)} aria-label="Abrir menu"><Menu size={20} /></button>{menuOpen && <div className="admin-menu-popover"><b>R7XIR ADMIN</b><button onClick={() => go("overview")}><Settings2 size={16} /> Config</button><button onClick={() => go("licenses")}><PackagePlus size={16} /> Gerenciar</button><button onClick={() => go("licenses")}><KeyRound size={16} /> Chaves</button></div>}<aside className="admin-sidebar"><div className="admin-logo"><AppLogo /><span className="admin-badge">ADMIN</span></div><div className="admin-nav"><span className="sidebar-section-label">CONTROLE</span><button className={view === "overview" ? "active" : ""} onClick={() => go("overview")}><LayoutDashboard size={18} /> Config</button><button className={view === "licenses" ? "active" : ""} onClick={() => go("licenses")}><KeyRound size={18} /> Chaves</button></div><div className="admin-sidebar-footer"><div className="admin-identity"><div className="admin-avatar"><Crown size={16} /></div><div><b>R7XIR</b><span>Administrador</span></div></div><button className="sidebar-logout" onClick={onLogout}><LogOut size={16} /> Sair</button></div></aside><main className="admin-main"><header className="admin-topbar"><div className="admin-mobile-logo"><AppLogo compact /></div><div><span className="topbar-kicker">CONTROL CENTER</span><h2>Olá, R7XIR <Crown size={18} /></h2></div><div className="admin-top-actions"><span className="admin-online"><span className="online-dot" /> SISTEMA ONLINE</span><button className="icon-button" onClick={() => toast.info("Painel atualizado")}><RefreshCw size={17} /></button><button className="admin-mobile-exit" onClick={onLogout}><LogOut size={16} /></button></div></header>{children}</main></div>;
+  return <div className="admin-shell"><button className="admin-menu-button" onClick={() => setMenuOpen(value => !value)} aria-label="Abrir menu"><Menu size={20} /></button>{menuOpen && <div className="admin-menu-popover"><b>CLEADMIN00 ADMIN</b><button onClick={() => go("overview")}><Settings2 size={16} /> Config</button><button onClick={() => go("licenses")}><PackagePlus size={16} /> Gerenciar</button><button onClick={() => go("licenses")}><KeyRound size={16} /> Chaves</button></div>}<aside className="admin-sidebar"><div className="admin-logo"><AppLogo /><span className="admin-badge">ADMIN</span></div><div className="admin-nav"><span className="sidebar-section-label">CONTROLE</span><button className={view === "overview" ? "active" : ""} onClick={() => go("overview")}><LayoutDashboard size={18} /> Config</button><button className={view === "licenses" ? "active" : ""} onClick={() => go("licenses")}><KeyRound size={18} /> Chaves</button></div><div className="admin-sidebar-footer"><div className="admin-identity"><div className="admin-avatar"><Crown size={16} /></div><div><b>CLEADMIN00</b><span>Administrador</span></div></div><button className="sidebar-logout" onClick={onLogout}><LogOut size={16} /> Sair</button></div></aside><main className="admin-main"><header className="admin-topbar"><div className="admin-mobile-logo"><AppLogo compact /></div><div><span className="topbar-kicker">CONTROL CENTER</span><h2>Olá, CLEADMIN00 <Crown size={18} /></h2></div><div className="admin-top-actions"><span className="admin-online"><span className="online-dot" /> SISTEMA ONLINE</span><button className="icon-button" onClick={() => toast.info("Painel atualizado")}><RefreshCw size={17} /></button><button className="admin-mobile-exit" onClick={onLogout}><LogOut size={16} /></button></div></header>{children}</main></div>;
 }
 
 function AdminOverview({ onGoLicenses }: { onGoLicenses: () => void }) {
@@ -403,11 +420,45 @@ function AdminLicenses() {
     if (nextPlanId === "hourly") { setDurationValue(1); setDurationUnit("hours"); }
     else if (planId === "hourly") { setDurationValue(1); setDurationUnit("days"); }
   };
-  return <div className="admin-content"><div className="admin-heading"><div><span className="eyebrow"><span className="eyebrow-dot" /> GESTÃO DE ACESSOS</span><h1>Licenças & usuários.</h1><p>Keys salvas na MockAPI: crie, revogue, bloqueie ou exclua permanentemente.</p></div><button className="primary-button" onClick={() => { setCreatedKey(""); setFormOpen(true); }}><PackagePlus size={17} /> Criar novo acesso</button></div>{createdKey && <div className="created-key-banner"><div className="notice-pulse"><KeyRound size={18} /></div><div><span>CHAVE GERADA · COPIE AGORA</span><b>{createdKey}</b></div><button onClick={async () => { try { await copyToClipboard(createdKey); toast.success("Chave copiada"); } catch { toast.error("Não foi possível copiar a chave"); } }}><Copy size={16} /> Copiar</button><button className="banner-close" onClick={() => setCreatedKey("")}><X size={16} /></button></div>}<div className="license-toolbar"><div className="search-shell"><Search size={16} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar por usuário ou chave..." /></div><div className="license-toolbar-actions"><div className="toolbar-count"><b>{allLicenses.length}</b> keys totais · {filtered.length} encontradas</div><button type="button" className="license-action" onClick={copyAllKeys} disabled={licenses.isLoading || !allLicenses.length}><Clipboard size={15} /> Copiar all</button><button type="button" className="license-action reset" onClick={confirmResetAll} disabled={licenses.isLoading || resetAll.isPending || !allLicenses.length}><Trash2 size={15} /> {resetAll.isPending ? "Excluindo..." : "Reset all"}</button></div></div><div className="licenses-table"><div className="table-head"><span>USUÁRIO</span><span>PLANO</span><span>DISPOSITIVO</span><span>VALIDADE</span><span>STATUS</span><span>AÇÕES</span></div>{licenses.isLoading ? <LoadingList /> : filtered.length === 0 ? <EmptyAdmin /> : filtered.map(item => <div className="table-row" key={item.id}><div className="user-cell"><div className="mini-avatar">{String(item.username ?? item.accessKey ?? "Usuário").slice(0, 1).toUpperCase()}</div><div><b>{item.username}</b><span className="key-text">{item.accessKey}</span></div></div><div><select className="plan-select" value={item.planId} onChange={event => update.mutate({ id: item.id, planId: event.target.value })}>{PLAN_CATALOG.map(plan => <option key={plan.id} value={plan.id}>{plan.name}</option>)}</select></div><div className="device-cell">{item.deviceId ? <><Smartphone size={15} /><span>Vinculado<br /><small>{String(item.deviceId).slice(0, 12)}...</small></span></> : <><Laptop size={15} /><span className="muted-text">Aguardando<br /><small>primeiro login</small></span></>}</div><div className="expiry-cell">{item.planId === "perm" ? <><b>Acesso permanente</b><span>sem expiração</span></> : !item.lastLoginAt ? <><b>Aguardando ativação</b><span>{item.planId === "hourly" ? "1 hora após o primeiro login" : "contagem a partir do primeiro login"}</span></> : <><b>{formatDate(item.expiresAt)}</b><span>{formatExpiry(item.expiresAt)}</span></>}</div><StatusPill status={item.status} /><div className="row-actions"><button title="Resetar dispositivo" onClick={() => resetDevice.mutate({ id: item.id })}><RotateCcw size={15} /></button><button title="Bloquear usuário" onClick={() => block.mutate({ id: item.id })}><Ban size={15} /></button><button title="Revogar chave" className="danger-action" onClick={() => revoke.mutate({ id: item.id })}><Trash2 size={15} /></button><button title="Excluir definitivamente da MockAPI" className="danger-action" onClick={() => { if (window.confirm("Excluir esta key da MockAPI definitivamente?")) remove.mutate({ id: item.id }); }}><X size={15} /></button></div></div>)}</div>{formOpen && <CreateLicenseModal username={username} setUsername={setUsername} planId={planId} setPlanId={handlePlanChange} durationValue={durationValue} setDurationValue={setDurationValue} durationUnit={durationUnit} setDurationUnit={setDurationUnit} onSubmit={submit} onClose={() => setFormOpen(false)} pending={create.isPending} />}</div>;
+  return <div className="admin-content"><div className="admin-heading"><div><span className="eyebrow"><span className="eyebrow-dot" /> GESTÃO DE ACESSOS</span><h1>Licenças & usuários.</h1><p>Keys salvas na MockAPI: crie, revogue, bloqueie ou exclua permanentemente.</p></div><button className="primary-button" onClick={() => { setCreatedKey(""); setFormOpen(true); }}><PackagePlus size={17} /> Criar novo acesso</button></div>{createdKey && <div className="created-key-banner"><div className="notice-pulse"><KeyRound size={18} /></div><div><span>CHAVE GERADA · COPIE AGORA</span><b>{createdKey}</b></div><button onClick={async () => { try { await copyToClipboard(createdKey); toast.success("Chave copiada"); } catch { toast.error("Não foi possível copiar a chave"); } }}><Copy size={16} /> Copiar</button><button className="banner-close" onClick={() => setCreatedKey("")}><X size={16} /></button></div>}<div className="license-toolbar"><div className="search-shell"><Search size={16} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar por usuário ou chave..." /></div><div className="license-toolbar-actions"><div className="toolbar-count"><b>{allLicenses.length}</b> keys totais · {filtered.length} encontradas</div><button type="button" className="license-action" onClick={copyAllKeys} disabled={licenses.isLoading || !allLicenses.length}><Clipboard size={15} /> Copiar all</button><button type="button" className="license-action reset" onClick={confirmResetAll} disabled={licenses.isLoading || resetAll.isPending || !allLicenses.length}><Trash2 size={15} /> {resetAll.isPending ? "Excluindo..." : "Reset all"}</button></div></div><div className="licenses-table"><div className="table-head"><span>USUÁRIO</span><span>PLANO</span><span>DISPOSITIVO</span><span>VALIDADE</span><span>STATUS</span><span>AÇÕES</span></div>{licenses.isLoading ? <LoadingList /> : filtered.length === 0 ? <EmptyAdmin /> : filtered.map(item => <div className="table-row" key={item.id}><div className="user-cell"><div className="mini-avatar">{String(item.username ?? item.accessKey ?? "Usuário").slice(0, 1).toUpperCase()}</div><div><b>{item.username}</b><span className="key-text">{item.accessKey}</span></div></div><div><select className="plan-select" value={item.planId} onChange={event => update.mutate({ id: item.id, planId: event.target.value })}>{PLAN_CATALOG.map(plan => <option key={plan.id} value={plan.id}>{plan.name}</option>)}</select></div><div className="device-cell">{item.deviceId ? <><Smartphone size={15} /><span>Vinculado<br /><small>{String(item.deviceId).slice(0, 12)}...</small></span></> : <><Laptop size={15} /><span className="muted-text">Aguardando<br /><small>primeiro login</small></span></>}</div><div className="expiry-cell">{item.planId === "perm" ? <><b>Acesso permanente</b><span>sem expiração</span></> : !item.lastLoginAt ? <><b>Aguardando ativação</b><span>{item.planId === "hourly" ? "1 hora após o primeiro login" : "contagem a partir do primeiro login"}</span></> : <><b>{formatDate(item.expiresAt)}</b><span>{formatExpiry(item.expiresAt)}</span></>}</div><StatusPill status={item.status} /><div className="row-actions"><button type="button" title="Copiar chave" aria-label={`Copiar chave de ${item.username}`} onClick={async () => { try { await copyToClipboard(item.accessKey); toast.success("Chave copiada"); } catch { toast.error("Não foi possível copiar a chave"); } }}><Copy size={15} /></button><button title="Resetar dispositivo" onClick={() => resetDevice.mutate({ id: item.id })}><RotateCcw size={15} /></button><button title="Bloquear usuário" onClick={() => block.mutate({ id: item.id })}><Ban size={15} /></button><button title="Revogar chave" className="danger-action" onClick={() => revoke.mutate({ id: item.id })}><Trash2 size={15} /></button><button title="Excluir definitivamente da MockAPI" className="danger-action" onClick={() => { if (window.confirm("Excluir esta key da MockAPI definitivamente?")) remove.mutate({ id: item.id }); }}><X size={15} /></button></div></div>)}</div>{formOpen && <CreateLicenseModal username={username} setUsername={setUsername} planId={planId} setPlanId={handlePlanChange} durationValue={durationValue} setDurationValue={setDurationValue} durationUnit={durationUnit} setDurationUnit={setDurationUnit} onSubmit={submit} onClose={() => setFormOpen(false)} pending={create.isPending} />}</div>;
+}
+
+function PlanPicker({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const selected = PLAN_CATALOG.find(plan => plan.id === value) ?? PLAN_CATALOG[0];
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (!pickerRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setOpen(false); triggerRef.current?.focus(); }
+    };
+    document.addEventListener("pointerdown", closeOutside);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOutside);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
+  return <div className="plan-picker" ref={pickerRef}>
+    <button ref={triggerRef} type="button" className="input-shell plan-picker-trigger" aria-haspopup="listbox" aria-expanded={open} aria-label={`Plano: ${selected.name} — ${selected.description}`} onClick={() => setOpen(current => !current)} onKeyDown={event => { if (event.key === "ArrowDown") { event.preventDefault(); setOpen(true); } }}>
+      <Crown size={16} aria-hidden="true" /><span>{selected.name} — {selected.description}</span><ChevronRight className="plan-picker-chevron" size={16} aria-hidden="true" />
+    </button>
+    {open && <div className="plan-picker-options" role="listbox" aria-label="Opções de plano">
+      {PLAN_CATALOG.map(plan => <button key={plan.id} type="button" role="option" aria-selected={value === plan.id} className={value === plan.id ? "selected" : ""} onClick={() => { onChange(plan.id); setOpen(false); triggerRef.current?.focus(); }}>
+        <span><b>{plan.name}</b><small>{plan.description}</small></span>{value === plan.id && <Check size={17} aria-hidden="true" />}
+      </button>)}
+    </div>}
+  </div>;
 }
 
 function CreateLicenseModal({ username, setUsername, planId, setPlanId, durationValue, setDurationValue, durationUnit, setDurationUnit, onSubmit, onClose, pending }: { username: string; setUsername: (value: string) => void; planId: string; setPlanId: (value: string) => void; durationValue: number; setDurationValue: (value: number) => void; durationUnit: (typeof DURATION_UNITS)[number]; setDurationUnit: (value: (typeof DURATION_UNITS)[number]) => void; onSubmit: (event: React.FormEvent) => void; onClose: () => void; pending: boolean }) {
-  return <div className="modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><div className="modal-card"><div className="modal-heading"><div><span className="eyebrow"><span className="eyebrow-dot" /> NOVO ACESSO</span><h2>Criar uma licença.</h2></div><button className="icon-button" onClick={onClose}><X size={17} /></button></div><p className="modal-description">Escolha um usuário e o tempo de acesso. A chave aleatória será criada automaticamente.</p><form onSubmit={onSubmit} className="admin-form"><label><span>Nome de usuário</span><div className="input-shell"><UserRound size={16} /><input value={username} onChange={event => setUsername(event.target.value)} placeholder="ex: player_pro" required minLength={2} /></div></label><label><span>Plano</span><div className="input-shell"><Crown size={16} /><select value={planId} onChange={event => setPlanId(event.target.value)}>{PLAN_CATALOG.map(plan => <option key={plan.id} value={plan.id}>{plan.name} — {plan.description}</option>)}</select></div></label><div className="form-two"><label><span>Duração</span><div className="input-shell"><Clock3 size={16} /><input type="number" min={1} max={planId === "hourly" ? 1 : 3650} value={durationValue} onChange={event => setDurationValue(Number(event.target.value))} disabled={planId === "hourly"} required /></div></label><label><span>Unidade</span><div className="input-shell"><Globe2 size={16} /><select value={durationUnit} onChange={event => setDurationUnit(event.target.value as (typeof DURATION_UNITS)[number])} disabled={planId === "hourly"}>{DURATION_UNITS.filter(unit => planId === "hourly" ? unit === "hours" : unit !== "hours").map(unit => <option key={unit} value={unit}>{unit === "hours" ? "Horas" : unit === "days" ? "Dias" : unit === "weeks" ? "Semanas" : unit === "months" ? "Meses" : "Anos"}</option>)}</select></div></label></div><div className="modal-info"><ShieldCheck size={16} /><span>A chave só aparecerá neste painel administrativo. O usuário fará login com nome + chave.</span></div><div className="modal-actions"><button type="button" className="ghost-button" onClick={onClose}>Cancelar</button><button type="submit" className="primary-button" disabled={pending}>{pending ? <><RefreshCw size={16} className="spin" /> Criando...</> : <><KeyRound size={16} /> Criar e gerar chave</>}</button></div></form></div></div>;
+  return <div className="modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}><div className="modal-card create-license-modal"><div className="modal-heading"><div><span className="eyebrow"><span className="eyebrow-dot" /> NOVO ACESSO</span><h2>Criar uma licença.</h2></div><button className="icon-button" onClick={onClose}><X size={17} /></button></div><p className="modal-description">Escolha um usuário e o tempo de acesso. A chave aleatória será criada automaticamente.</p><form onSubmit={onSubmit} className="admin-form"><label><span>Nome de usuário</span><div className="input-shell"><UserRound size={16} /><input value={username} onChange={event => setUsername(event.target.value)} placeholder="ex: player_pro" required minLength={2} /></div></label><label><span>Plano</span><PlanPicker value={planId} onChange={setPlanId} /></label><div className="form-two"><label><span>Duração</span><div className="input-shell"><Clock3 size={16} /><input type="number" min={1} max={planId === "hourly" ? 1 : 3650} value={durationValue} onChange={event => setDurationValue(Number(event.target.value))} disabled={planId === "hourly"} required /></div></label><label><span>Unidade</span><div className="input-shell"><Globe2 size={16} /><select value={durationUnit} onChange={event => setDurationUnit(event.target.value as (typeof DURATION_UNITS)[number])} disabled={planId === "hourly"}>{DURATION_UNITS.filter(unit => planId === "hourly" ? unit === "hours" : unit !== "hours").map(unit => <option key={unit} value={unit}>{unit === "hours" ? "Horas" : unit === "days" ? "Dias" : unit === "weeks" ? "Semanas" : unit === "months" ? "Meses" : "Anos"}</option>)}</select></div></label></div><div className="modal-info"><ShieldCheck size={16} /><span>A chave só aparecerá neste painel administrativo. O usuário fará login com nome + chave.</span></div><div className="modal-actions"><button type="button" className="ghost-button" onClick={onClose}>Cancelar</button><button type="submit" className="primary-button" disabled={pending}>{pending ? <><RefreshCw size={16} className="spin" /> Criando...</> : <><KeyRound size={16} /> Criar e gerar chave</>}</button></div></form></div></div>;
 }
 
 function AdminApp({ onLogout }: { onLogout: () => void }) {
